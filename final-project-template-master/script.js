@@ -86,29 +86,29 @@ function Chart(selector) {
 
   // SCALES
 
-  chart.x = d3.scale.linear()
+  chart.x = d3.scaleLinear() // change o function 
     .domain([0, d3.max(app.data, function (d) { return d.total_fertility; })])
     .range([0, chart.width])
     .nice();
 
-  chart.y = d3.scale.linear()
+  chart.y = d3.scaleLinear()
     .domain([0, d3.max(app.data, function (d) { return d.life_expectancy; })])
     .range([chart.height, 0])
     .nice();
 
-  chart.r = d3.scale.sqrt()
+  chart.r = d3.scaleSqrt() // change in the way of calling the function now D3.V4
     .domain([0, d3.max(app.data, function (d) { return d.population; })])
     .range([0, MAX_RADIUS]);
 
-  chart.color = d3.scale.category10();
+  chart.color = d3.scaleOrdinal(d3.schemeCategory10); // category of colors 
 
   // AXES
 
-  var xAxis = d3.svg.axis()
+  var xAxis = d3.axis() // there is no longer .svg d3.svg.axis
     .orient('bottom')
     .scale(chart.x);
 
-  var yAxis = d3.svg.axis()
+  var yAxis = d3.axis()
     .orient('left')
     .scale(chart.y);
 
@@ -168,7 +168,7 @@ Chart.prototype = {
       .text(app.options.year);
 
     var countries = chart.svg.selectAll('.country')
-      .data(txData);
+      .data(txData, function (d) { return d.country ; });
 
     countries.enter().append('circle')
       .attr('class', 'country')
@@ -179,7 +179,7 @@ Chart.prototype = {
       .attr('cy', chart.height / 2)
 
     countries
-      .sort(function (a, b) { return b.population - a.population; })
+      .sort(function (a, b) { return b.population - a.population; }) // instead of select , sort to make the small ones to come 1st in the graph 
       .transition().duration(TRANSITION_DURATION)
       .attr('r', function (d) { return chart.r(d.population); })
       .attr('cx', function (d) { return chart.x(d.total_fertility); })
@@ -189,5 +189,12 @@ Chart.prototype = {
       .transition().duration(TRANSITION_DURATION)
       .attr('r', 0)
       .remove();
+
+    countries.exit()
+      transition().duration(TRANSITION_DURATION)
+      .attr('r', 0)
+      .remove();
   }
+
+  // D3 is not making any difference between countries, so it is not capabable to recognized how in a bin a contry passes along time -- to solve it key function 
 }
