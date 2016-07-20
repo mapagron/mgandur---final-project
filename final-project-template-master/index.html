@@ -1,26 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Final Project Template</title>
-  <!-- Bootstrap documentation: http://getbootstrap.com -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="header section">
-  <div class="container">
-    <h1>Final Project Template</h1>
-    <p>A starting point for final projects.</p>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Final</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <style>
+      
+      .h2 {
+        text-align: center;
+      }
+
+      .section {
+        padding: 2em 0;
+      }
+      .header {
+        background: linear-gradient(to bottom, #404040 0%, #262626 100%);
+        color: white;
+        padding: 1em 0 2em;
+      }
+      
+      .description div {
+        background-color: grey;
+        color: white;
+        margin: 20px 0 20px 0;
+        padding: 20px;
+        float:left
+      }
+
+      .w3-card-4 {
+        display: inline-block;
+        width: 33%;
+        padding: 2em 0 2em;
+      }
+
+
+        .chart div {
+        font: 10px sans-serif;
+        background-color: #2b3121;
+        text-align: center;
+        padding: 3px;
+        margin: 1px;
+        color: white;
+        float:right;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="header section">
+      <div class="container">
+        <h1>Colombia: Sexual Assault, Homicides, and Battery </h1>
+        <p>Potential consequences of +60 years of internal conflict: 2010 - 2015 </p>
+        
+      </div>
+    </div>
+
+    <div class="chart">
+          <div style="width: 454px;">Assault and battery 117964 victims</div>
+          <div style="width: 349px;">Homicide - 86942 victims</div>
+          <div style="width: 286px;">Sexual Assaults - 71978 victims</div>
+      </div>
+
+    <div class= "description problem">
+      <div class="description">
+      <p>What are the ways which we can potentially interpret this data that are only possible through an interactive visualization?
+      
+      The perspective of the conflict beyond the guerrilla groups.
+      
+      So far, studies have focused on what the guerrilla groups have done as part of the Colombian conflict. However, crimes related to the violation of human rights, sexual assaults, and homicides have not been accounted for as a part of the consequences of said conflict.
+
+      As part of the recent peace agreement between Colombia’s government and the guerrilla group FARC, the country faces new challenges which include building up different social structures and establishing mechanisms for the inclusion of guerrilla militants into the productive sector. As part of this data visualization, I would like to explore the special needs based on each region.</p>
+      
+      <hr>
+
+      <p>The dataset includes more than 200,000 records of victims of homicides, sexual assaults, and battery during the period of 2010-2015. A row includes the date, the type and location of the felony, the gender, education level, and the age of the victim.</p>
+
+      </div>
+    </div>
+    
+    
+    <! --Creating the boxes  --> 
+    
+    <! --Option#1   --> 
+    <div class="w3-card-4">
+      <header class="w3-container w3-hover-shadow w3-light-green">
+        <h2>Option#1 - Heat Calendar</h2>
+      </header>
+      <div class="w3-container">
+        <p>
+            <ul>
+                <li>Objective : Create awareness about the importance of the peace negotiation process in Colombia as a first step to overcome some of the most worrying social problems that the country faces.  </li>
+                <li>Focus Story Telling: "...While in Havana or Peace Matters"  </li>
+                <li>Key Points: While Colombian Government was negotiating peace with FARC guerrilla the country faced high volumes of homicides, sexual arrasment, and assault and battery. </li>
+            </ul>
+
+        </p>
+        <button class="w3-btn-block"> 
+          <a href="https://www.lucidchart.com/invitations/accept/257282ef-3b8e-4465-ba85-0d288a364f66" target="_top">+Draft</a>
+        </button>
+      </div>
+
+      <footer class="w3-container w3-light-green">
+        <h5>Bibliography/Code Sources:
+            <a href="https://bl.ocks.org/mbostock/4063318" target="_top">Source 1,</a>
+            <a href="http://bl.ocks.org/tjdecke/5558084" target="_top">Source 2,</a>
+            <a href="http://mikemcdearmon.com/portfolio/300-outings" target="_top">Source 3.</a>
+                     
+        </h5>
+      </footer>
+
+    </div>
+      <! --Option#2   --> 
+    <div class="w3-card-4">
+      <header class="w3-container w3-hover-shadow w3-lime">
+        <h2>Option#2 - Map  </h2>
+      </header> 
+      <div class="w3-container">
+        <p>
+           <ul>
+                <li>Objective : Present the different consequences and the most affected areas of Colombia in regards to homicides, sexual assaults, and battery. 
+                </li>
+                <li>Focus Story Telling: "Colombia beyond de conflict"  </li>
+                <li>Key Points: Colombia has at least one homicide per day. How many countries around the world hold this standard?  
+                Based on the data - young professionals who live in capitals are most likely to be murdered. Amongts them, women and children are the most affected groups of sexual assault.
+                 </li>
+            </ul> 
+        </p>
+        <button class="w3-btn-block">
+          <a href="https://www.lucidchart.com/invitations/accept/257282ef-3b8e-4465-ba85-0d288a364f66" target="_top">+Draft</a>
+        </button>
+      </div>
+
+      <footer class="w3-container w3-lime">
+        <h5>Bibliography/Code Sources:
+            <a href="http://bl.ocks.org/mbostock/5562380" target="_top">Source 1.</a>          
+       </h5>
+      </footer>
+
+    </div>    
+   
+    <! --Option#3   --> 
+    <div class="w3-card-4">
+      <header class="w3-container w3-hover-shadow w3-light-green">
+        <h2>Option #3</h2>
+      </header>
+      <div class="w3-container">
+        <p>Lorem ipsum...</p>
+        <button class="w3-btn-block">+ Draft</button>
+      </div>
+
+      <footer class="w3-container w3-light-green">
+        <h5>Footer</h5>
+      </footer>
   </div>
-</div>
-<div class="main section">
-  <div class="container">
-    <div id="chart"></div>
-  </div>
-</div>
-<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
-<script type="text/javascript" src="script.js"></script>
-</body>
+
+
+
+  
+<! --Creating an histogram   
+  <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
+  <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
+  <script>
+  
+  var data = [];
+  var options = {
+    yearRange: 'all'
+  };
+  var margin = { top: 5, right: 10, bottom: 40, left: 10 };
+  var width = 640 - margin.right - margin.left;
+  var height = 240 - margin.top - margin.bottom;
+  var binCount = 10;
+  
+  // FETCH DATA
+  d3.json('data.json', function (error, json) {
+    if (error) { throw error; }
+    data = json;
+    var charts = [
+      new Chart('#chart1', 'unemployment', 'Unemployment Rate'),
+      new Chart('#chart2', 'employment', 'employment Rate')
+      //new Chart('#chart3', 'unemployment, 'EmploymentUnemployment')
+    ];
+    // EVENT HANDLERS
+    d3.select('#year-range').on('change', function () {
+      options.yearRange = d3.event.target.value;
+      charts.forEach(function (chart) { chart.update(); });
+    });
+  });
+  function Chart(selector, variable, title) {
+    var chart = this;
+    chart.variable = variable;
+    chart.svg = d3.select(selector)
+      .append('svg')
+      .attr('width', width + margin.right + margin.left)
+      .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    chart.x = d3.scale.linear()
+      .domain([0, d3.max(data, function (d) { return d[variable]; })])
+      .rangeRound([0, width])
+      .nice();
+    var xAxis = d3.svg.axis()
+      .scale(chart.x)
+      .ticks(binCount)
+      .tickFormat(d3.format('.0%'))
+      .orient('bottom');
+    chart.svg.append('g')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate(0,' + (height) + ')')
+      .call(xAxis)
+      .append('text')
+      .attr('class', 'label')
+      .attr('dy', '.71em')
+      .attr('y', 25)
+      .attr('x', width / 2)
+      .style('text-anchor', 'middle')
+      .text(title);
+    chart.tooltip = d3.tip()
+      .attr('class', 'tooltip')
+      .offset([-6, 0])
+      .html(function(d) { return d.length + ' months'; });
+    chart.tooltip(chart.svg);
+    chart.update();
+  }
+  
+  Chart.prototype.update = function () {
+    var chart = this;
+    txData = data.slice();
+    if (options.yearRange !== 'all') {
+      var yearRange = options.yearRange.split('-');
+      txData = txData.filter(function (d) {
+        return d.year >= yearRange[0] && d.year <= yearRange[1];
+      });
+    }
+    
+    // SCATTERPLOT 
+    var points = svg.selectAll('.point')
+      .data(points);
+      //.data(txData);
+    
+    // HISTOGRAM 
+    var hist = d3.layout.histogram()
+      .value(function (d) { return d[chart.variable]; })
+      .bins(chart.x.ticks(binCount))
+      (txData);
+    var y = d3.scale.linear()
+      .domain([0, d3.max(hist, function (d) { return d.length; })])
+      .range([0, height]);
+    var barWidth = chart.x(hist[1].x) - chart.x(hist[0].x) + 1;
+    var bars = chart.svg.selectAll('.bar')
+      .data(hist);
+    
+
+    // ENTER
+    points.enter().append('circle')
+      .attr('class', 'point')
+      .attr('r', 5);
+    points
+      .attr('cx', function (d) { return x(d.unemployment); })
+      .attr('cy', function (d) { return y(d.employment); });
+    points.exit().remove();
+    
+
+    bars.enter().append('rect')
+      .attr('class', 'bar')
+      .attr('x', function (d) { return chart.x(d.x); })
+      .attr('width', barWidth)
+      .attr('y', height)
+      .attr('height', 0)
+      .on('mouseover', chart.tooltip.show)
+      .on('mouseout', chart.tooltip.hide);
+    // ALL
+    bars
+      .transition().duration(150).delay(function (d, i) { return i * 50; })
+      .attr('y', function (d) { return height - y(d.length); })
+      .attr('height', function (d) { return y(d.length); });
+  };--> 
+ 
+  </body>
 </html>
