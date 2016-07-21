@@ -123,9 +123,9 @@
            <ul>
                 <li>Objective : Present the different consequences and the most affected areas of Colombia in regards to homicides, sexual assaults, and battery. 
                 </li>
-                <li>Focus Story Telling: "Colombia beyond de conflict"  </li>
+                <li>Focus Story Telling: "Colombia beyond the conflict"  </li>
                 <li>Key Points: Colombia has at least one homicide per day. How many countries around the world hold this standard?  
-                Based on the data - young professionals who live in capitals are most likely to be murdered. Amongts them, women and children are the most affected groups of sexual assault.
+                Based on the data - young professionals who live in capitals are most likely to be murdered. Amongst them, women and children are the most affected groups of sexual assault.
                  </li>
             </ul> 
         </p>
@@ -145,139 +145,31 @@
     <! --Option#3   --> 
     <div class="w3-card-4">
       <header class="w3-container w3-hover-shadow w3-light-green">
-        <h2>Option #3</h2>
-      </header>
+        <h2>Option#3 - Bubble Chart + Histogram  </h2>
+      </header> 
       <div class="w3-container">
-        <p>Lorem ipsum...</p>
-        <button class="w3-btn-block">+ Draft</button>
+        <p>
+           <ul>
+                <li>Objective : Objective: Present the behaviour of homicides, sexual assaults, and battery divided by the 32 Colombian departments compared to the index of conflict that the government assigned to each one of them. 
+                </li>
+                <li>Focus Story Telling: "Departments: social problems vs conflict"  </li>
+                <li>Key Points: Colombia has at least one homicide per day. How many countries around the world hold this standard?  
+                Based on the data - young professionals who live in capitals are most likely to be murdered. Amongst them, women and children are the most affected groups of sexual assault.
+                 </li>
+            </ul> 
+        </p>
+        <button class="w3-btn-block">
+          <a href="https://www.lucidchart.com/invitations/accept/bc8be060-bf1f-45a7-97bc-87468d8ef8e1" target="_top">+Draft</a>
+        </button>
       </div>
 
-      <footer class="w3-container w3-light-green">
-        <h5>Footer</h5>
+      <footer class="w3-container w3-lime">
+        <h5>Bibliography/Code Sources:
+            <a href="https://bl.ocks.org/mbostock/4063269" target="_top">Source 1.</a>          
+       </h5>
       </footer>
-  </div>
 
-
-
-  
-<! --Creating an histogram   
-  <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
-  <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
-  <script>
-  
-  var data = [];
-  var options = {
-    yearRange: 'all'
-  };
-  var margin = { top: 5, right: 10, bottom: 40, left: 10 };
-  var width = 640 - margin.right - margin.left;
-  var height = 240 - margin.top - margin.bottom;
-  var binCount = 10;
-  
-  // FETCH DATA
-  d3.json('data.json', function (error, json) {
-    if (error) { throw error; }
-    data = json;
-    var charts = [
-      new Chart('#chart1', 'unemployment', 'Unemployment Rate'),
-      new Chart('#chart2', 'employment', 'employment Rate')
-      //new Chart('#chart3', 'unemployment, 'EmploymentUnemployment')
-    ];
-    // EVENT HANDLERS
-    d3.select('#year-range').on('change', function () {
-      options.yearRange = d3.event.target.value;
-      charts.forEach(function (chart) { chart.update(); });
-    });
-  });
-  function Chart(selector, variable, title) {
-    var chart = this;
-    chart.variable = variable;
-    chart.svg = d3.select(selector)
-      .append('svg')
-      .attr('width', width + margin.right + margin.left)
-      .attr('height', height + margin.top + margin.bottom)
-      .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-    chart.x = d3.scale.linear()
-      .domain([0, d3.max(data, function (d) { return d[variable]; })])
-      .rangeRound([0, width])
-      .nice();
-    var xAxis = d3.svg.axis()
-      .scale(chart.x)
-      .ticks(binCount)
-      .tickFormat(d3.format('.0%'))
-      .orient('bottom');
-    chart.svg.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', 'translate(0,' + (height) + ')')
-      .call(xAxis)
-      .append('text')
-      .attr('class', 'label')
-      .attr('dy', '.71em')
-      .attr('y', 25)
-      .attr('x', width / 2)
-      .style('text-anchor', 'middle')
-      .text(title);
-    chart.tooltip = d3.tip()
-      .attr('class', 'tooltip')
-      .offset([-6, 0])
-      .html(function(d) { return d.length + ' months'; });
-    chart.tooltip(chart.svg);
-    chart.update();
-  }
-  
-  Chart.prototype.update = function () {
-    var chart = this;
-    txData = data.slice();
-    if (options.yearRange !== 'all') {
-      var yearRange = options.yearRange.split('-');
-      txData = txData.filter(function (d) {
-        return d.year >= yearRange[0] && d.year <= yearRange[1];
-      });
-    }
-    
-    // SCATTERPLOT 
-    var points = svg.selectAll('.point')
-      .data(points);
-      //.data(txData);
-    
-    // HISTOGRAM 
-    var hist = d3.layout.histogram()
-      .value(function (d) { return d[chart.variable]; })
-      .bins(chart.x.ticks(binCount))
-      (txData);
-    var y = d3.scale.linear()
-      .domain([0, d3.max(hist, function (d) { return d.length; })])
-      .range([0, height]);
-    var barWidth = chart.x(hist[1].x) - chart.x(hist[0].x) + 1;
-    var bars = chart.svg.selectAll('.bar')
-      .data(hist);
-    
-
-    // ENTER
-    points.enter().append('circle')
-      .attr('class', 'point')
-      .attr('r', 5);
-    points
-      .attr('cx', function (d) { return x(d.unemployment); })
-      .attr('cy', function (d) { return y(d.employment); });
-    points.exit().remove();
-    
-
-    bars.enter().append('rect')
-      .attr('class', 'bar')
-      .attr('x', function (d) { return chart.x(d.x); })
-      .attr('width', barWidth)
-      .attr('y', height)
-      .attr('height', 0)
-      .on('mouseover', chart.tooltip.show)
-      .on('mouseout', chart.tooltip.hide);
-    // ALL
-    bars
-      .transition().duration(150).delay(function (d, i) { return i * 50; })
-      .attr('y', function (d) { return height - y(d.length); })
-      .attr('height', function (d) { return y(d.length); });
-  };--> 
+    </div>  
  
   </body>
 </html>
