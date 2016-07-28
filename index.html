@@ -1,54 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Final</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-    <style>
-      
-      .h2 {
-        text-align: center;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colombia Colombia: Sexual Assault, Homicides, and Battery </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <style>
 
-      .section {
-        padding: 2em 0;
-      }
-      .header {
+    .header {
         background: linear-gradient(to bottom, #404040 0%, #262626 100%);
         color: white;
+        text-align: left;
         padding: 1em 0 2em;
       }
-      
-      .description div {
-        background-color: grey;
+
+    .description div {
+        background-color: #262626;
         color: white;
         margin: 20px 0 20px 0;
         padding: 20px;
-        float:left
+        float:left;
       }
 
-      .w3-card-4 {
-        display: inline-block;
-        width: 33%;
-        padding: 2em 0 2em;
-      }
-
-
-      .chart div {
-        font: 10px sans-serif;
-        background-color: #2b3121;
-        text-align: center;
-        padding: 3px;
-        margin: 1px;
-        color: white;
-        float:right;
-      }
-
-
-    .column{
-      border: 2px solid red;
+    .column
+    {
+      border: 2px solid #262626;
       /* display dictates the orientation of the element */
       display: inline-block;
       /* Set vertical-align to top in order to align columns to the top of the page */
@@ -57,55 +33,43 @@
       height: 500px;
     }
 
-    </style>
-  </head>
+    .chart div {
+      font: 10px sans-serif;
+      background-color: #2b3121;
+      text-align: center;
+      padding: 3px;
+      margin: 1px;
+      color: white;
+      float:bottom;
+    }
 
-  <body>
-    <div class="header section">
-      <div class="container">
-        <h1>Colombia: Sexual Assault, Homicides, and Battery </h1>
-        <p>Potential consequences of +60 years of internal conflict: 2010 - 2015 </p>
-        
-      </div>
+  </style>
+
+</head>
+
+<body>
+
+  <div class="header section">
+    <div class="container">
+      <h1>Colombia: Sexual Assault, Homicides, and Battery </h1>
+      <p>Potential consequences of +60 years of internal conflict: 2010 - 2015 </p>
     </div>
+  </div>
+  
+  <div class="chart">
+    <div style="width: 454px;">Assault and battery 117964 victims</div>
+    <div style="width: 349px;">Homicide - 86942 victims</div>
+    <div style="width: 286px;">Sexual Assaults - 71978 victims</div>
+  </div>
 
-    <div class="chart">
-          <div style="width: 454px;">Assault and battery 117964 victims</div>
-          <div style="width: 349px;">Homicide - 86942 victims</div>
-          <div style="width: 286px;">Sexual Assaults - 71978 victims</div>
-      </div>
+  <div id="info1" class="column"> <!-- sintax = attribute = value -->
+    The dataset includes more than 200,000 records of victims of homicides, sexual assaults, and battery during the period of 2010-2015. A row includes the date, the type and location of the felony, the gender, education level, and the age of the victim.
+  </div>
 
-    <div class= "description problem">
-      <div class="description">
-      <p>What are the ways which we can potentially interpret this data that are only possible through an interactive visualization?
-      
-      The perspective of the conflict beyond the guerrilla groups.
-      
-      So far, studies have focused on what the guerrilla groups have done as part of the Colombian conflict. However, crimes related to the violation of human rights, sexual assaults, and homicides have not been accounted for as a part of the consequences of said conflict.
-
-      As part of the recent peace agreement between Colombia’s government and the guerrilla group FARC, the country faces new challenges which include building up different social structures and establishing mechanisms for the inclusion of guerrilla militants into the productive sector. As part of this data visualization, I would like to explore the special needs based on each region.</p>
-      
-      <hr>
-
-      <p>The dataset includes more than 200,000 records of victims of homicides, sexual assaults, and battery during the period of 2010-2015. A row includes the date, the type and location of the felony, the gender, education level, and the age of the victim. <a href="https://docs.google.com/document/d/1OCDRRSorx6QCqLtLEySEf5JxTVsBdTQuCaYcreAzu7o/edit?usp=sharing" target="_top">More Information About the Data</a></p>
-
-      </div>
-
-    <div id="info1" class="column"> <!-- sintax = attribute = value -->
-      Sample Text 1 
-      </div>
-    </div>
-    
-    <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
-    <script type="text/javascript" src="https://npmcdn.com/science@1.9.3/science.v1.min.js"></script>
-    <script type="text/javascript" src="https://npmcdn.com/simple-statistics@2.0.0/dist/simple-statistics.min.js"></script>
-    <script>
-
-    // Creating a Basic Bubble Chart 
-    // Source // https://bl.ocks.org/mbostock/4063269 
-    // Source // http://jrue.github.io/coding/
-    // documentation: https://github.com/d3/d3-3.x-api-reference/blob/master/Pack-Layout.md 
-    // JUL26 -  problems with accents, color and display (figure out)
+  <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
+  <script type="text/javascript" src="https://npmcdn.com/science@1.9.3/science.v1.min.js"></script>
+  <script type="text/javascript" src="https://npmcdn.com/simple-statistics@2.0.0/dist/simple-statistics.min.js"></script>
+  <script>
 
     // info is a parameter that is expected between the parenthesis when you call the function
     function setInfo( info ) {
@@ -130,10 +94,14 @@
     // documentation: https://github.com/d3/d3-3.x-api-reference/blob/master/Pack-Layout.md 
     // TODO: How to categorize the bubbles as complex as this code 
     // JUL 26 - Index + something not working + q:layout + q: data+json 
-    // JUL 26: ASK THEM -- DATA how can I create the nodes in data.json without do it manually? 
+    // JUL 26: ASK THEM -- DATA how can I create the nodes in data.json without do it manually? ; 
+    // JUL 26: text align left is not working -- check 
+    // JUL 26: background color - check for a good scheme of colors -- nothing looks nice. 
+    // check out how to add color schemes 
 
     var width = 800;
     var height = 600;
+    //var c20c = d3.scale.category20c(); pending to make it work 
       
     var svg = d3.select("body").append("svg")
           .attr("width", width)
@@ -158,10 +126,10 @@
           .attr("class", "node")
           .attr("transform", function (d) { return "translate(" +d.x + "," + d.y + ")"; }); // this is not about the function is about the html position
 
-      var description = "tesT";
+      var description = "test";
       node.append("circle")
         .attr("r", function (d) { return d.r; }) 
-        .attr("fill", function (d) { return d.children ? "#fff" : "steelblue"; })
+        .attr("fill", function (d) { return d.children ? "#fff" : "c20c"; })
         .attr("opacity", 0.25)
         .attr("stroke", function (d) { return d.children ? "#fff" : "ADADAD"; })
         .attr("stroke-width", "2")
@@ -172,7 +140,19 @@
 
     });
 
-    </script>
+    // if d.children is defined
+    /*
+    if( d.children != undefined )
+    {
+      return d.department;
+    }
+    else
+    {
+      return d.department;
+    }
+    */
+  </script>
   
-  </body>
+</body>
+
 </html>
