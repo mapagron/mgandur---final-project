@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 6: Transitions, Events, and the Constructor Pattern</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <style>
+        
+    .section {
+      padding: 1em 0;
+    }
+    .header {
+      background: linear-gradient(to bottom, #404040 0%, #262626 100%);
+      color: white;
+      padding: 1em 0 2em;
+    }
+    
+    .description div {
+        background-color: grey;
+        color: white;
+        margin: 20px 0 20px 0;
+        padding: 20px;
+        float:left
+      }
+
+
+    svg {
+      display: block;
+      margin: 0 auto;
+    }
+    .axis path, .axis line {
+      fill: none;
+      stroke: #ccc;
+      shape-rendering: crispEdges;
+    }
+    .axis text {
+      font-size: 11px;
+    }
+    .label {
+      font-weight: 700;
+    }
+
+    /* style for the histograms. Source http://bl.ocks.org/mbostock/3048450*/ 
+    .bar {
+      fill: #337ab7;
+    }
+    .bar:hover {
+      fill: #135a97;
+    }
+
+    .bar2 {
+      fill: #337ab7;
+    }
+    .bar2:hover {
+      fill: #135a97;
+    }
+    .bar rect {
+      fill:grey;
+    }
+    .bar text {
+      fill: #fff;
+      font: 10px sans-serif;
+    }
+
+    .bar2 rect {
+      fill: lime;
+    }
+    .bar2 text {
+      fill: #fff;
+      font: 10px sans-serif;
+    }
+
+    .tooltip {
+      padding: .5em 1em;
+      background: rgba(0,0,0,.75);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    
+
+    .point {
+      stroke: rgb(51, 122, 183);
+      stroke-width: 1;
+      fill: rgba(51, 122, 183, .5);
+      opacity: .5;
+    }
+    .point.filtered {
+      opacity: .05;
+    }
+    
+    .line {
+      stroke: rgb(175, 80, 75);
+      stroke-width: 2;
+    }
+    /*Style for the grid example from http://www.d3noob.org/2013/01/adding-grid-lines-to-d3js-graph.html*/ 
+    .grid .tick {
+      stroke: lightgrey;
+    opacity: 0.7;
+    }
+    .grid path {
+      stroke-width: 0;
+    }
+    
+
+    
+  </style>
+</head>
+<body>
+    <div class="header section">
+      <div class="container">
+        <h1>Colombia</h1>
+        <p> (2000 - 2016)</p>
+      </div>
+    </div>
+    <div class= "description problem">
+        <div class="description">
+          <p>The rate of unemployment in Colombia, which had state in the double digit demonstrates the challenges that the Colombian labor market has being struggling with.  </p>
+          <hr>
+          <p>Informal employment is one of the tangibles consequences of this high rate which over the past decade remains on +20%. </p>
+        </div>
+    </div>
+    <div class="controls section">
+      <div class="container">
+        <div class="btn-toolbar">
+          <label for="Department">Department </label>
+          <select id="deparment">
+            <option value="all">All Departments (2010&ndash;2015)</option>
+            <option value="Amazonas">Amazonas</option>
+            <option value="Antioquia">Antioquia</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="main section">
+      <div class="container">
+        <div id="chart1"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
+    <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
+    <script>
+
+      
+
+
+      var data = [
+      {"department":"Amazonas","apob":4.608695652,"hpob":0.000895081,"spob":0.00468296},
+      {"department":"Antioquia","apob":0.275784157,"hpob":0.002302761,"spob":0.000712803},
+      {"department":"Arauca","apob":2.180263158,"hpob":0.00286587,"spob":0.002198424},
+      {"department":"Atlántico","apob":3.099409755,"hpob":0.001292922,"spob":0.001307382},
+      {"department":"Bolívar","apob":1.940689054,"hpob":0.001080574,"spob":0.000839294},
+      {"department":"Boyacá","apob":4.108695652,"hpob":0.00053988,"spob":0.002141525},
+      {"department":"Caldas","apob":0.486951694,"hpob":0.001819299,"spob":0.001525342},
+      {"department":"Caquetá","apob":1.345578231,"hpob":0.003038232,"spob":0.002817082},
+      {"department":"Casanare","apob":1.87012987,"hpob":0.001273787,"spob":0.001464028},
+      {"department":"Cauca","apob":0.384865504,"hpob":0.00243051,"spob":0.000913866},
+      {"department":"Cesar","apob":1.485119048,"hpob":0.001290815,"spob":0.000945061},
+      {"department":"Chocó","apob":1.017946162,"hpob":0.001985958,"spob":0.001544414},
+      {"department":"Córdoba","apob":0.899413244,"hpob":0.001374251,"spob":0.000905992},
+      {"department":"Cundinamarca","apob":1.232471291,"hpob":0.003935888,"spob":0.003229993},
+      {"department":"Guainía","apob":4,"hpob":0.00026114,"spob":0.00109204},
+      {"department":"Guajira","apob":2.46179129,"hpob":0.010806155,"spob":0.009873825},
+      {"department":"Guaviare","apob":0.664310954,"hpob":0.000242106,"spob":0.000169389},
+      {"department":"Huila","apob":4.982598608,"hpob":0.001749369,"spob":0.003862007},
+      {"department":"Magdalena","apob":1.550258472,"hpob":0.001368412,"spob":0.001277237},
+      {"department":"Meta","apob":2.593228656,"hpob":0.002080265,"spob":0.002504892},
+      {"department":"Nariño","apob":2.490816019,"hpob":0.001880512,"spob":0.000852771},
+      {"department":"NorteDeSantander","apob":1.568367347,"hpob":0.002149569,"spob":0.001497387},
+      {"department":"Putumayo","apob":1.508256881,"hpob":0.003118411,"spob":0.001645033},
+      {"department":"Quindío","apob":0.404912281,"hpob":0.002506715,"spob":0.002158414},
+      {"department":"Risaralda","apob":0.372610049,"hpob":0.002364258,"spob":0.002528252},
+      {"department":"SanAndrés","apob":1,"hpob":0.00154343,"spob":0.00133591},
+      {"department":"Santander","apob":4.117219917,"hpob":0.000930931,"spob":0.003367384},
+      {"department":"Sucre","apob":3.293556086,"hpob":0.000974522,"spob":0.002336294},
+      {"department":"Tolima","apob":0.763471626,"hpob":0.001484886,"spob":0.001250505},
+      {"department":"Valle","apob":0.827588047,"hpob":0.004021081,"spob":0.001909048},
+      {"department":"Vaupés","apob":2,"hpob":0.000272238,"spob":0.000362985},
+      {"department":"Vichada","apob":1.601694915,"hpob":0.001601042,"spob":0.00109902}
+      ];
+       
+      var xData = ["apob", "hpob", "spob"];
+       
+      var margin = {top: 20, right: 50, bottom: 30, left: 50},
+              width = 1200 - margin.left - margin.right,
+              height = 800 - margin.top - margin.bottom;
+       
+      var x = d3.scale.ordinal()
+              .rangeRoundBands([0, width], .35);
+       
+      var y = d3.scale.linear()
+              .rangeRound([height, 0]);
+       
+      var color = d3.scale.category20();
+       
+      var xAxis = d3.svg.axis()
+              .scale(x)
+              .orient("bottom");
+       
+      var svg = d3.select("body").append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+              .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      //d3.csv('stacktest.csv', function (error, json) {
+        //if (error) { throw error; }
+        //data = json;
+
+        var dataIntermediate = xData.map(function (c) {
+            return data.map(function (d) {
+                return {x: d.department, y: d[c]};
+            });
+        });
+         
+        var dataStackLayout = d3.layout.stack()(dataIntermediate);
+         
+        x.domain(dataStackLayout[0].map(function (d) {
+            return d.x;
+        }));
+         
+        y.domain([0,
+            d3.max(dataStackLayout[dataStackLayout.length - 1],
+                    function (d) { return d.y0 + d.y;})
+            ])
+          .nice();
+         
+        var layer = svg.selectAll(".stack")
+                .data(dataStackLayout)
+                .enter().append("g")
+                .attr("class", "stack")
+                .style("fill", function (d, i) {
+                    return color(i);
+                });
+         
+        layer.selectAll("rect")
+                .data(function (d) {
+                    return d;
+                })
+                .enter().append("rect")
+                .attr("x", function (d) {
+                    return x(d.x);
+                })
+                .attr("y", function (d) {
+                    return y(d.y + d.y0);
+                })
+                .attr("height", function (d) {
+                    return y(d.y0) - y(d.y + d.y0);
+                })
+                .attr("width", x.rangeBand());
+         
+        svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+      //});
+    </script>
+  </body>
+</html>
