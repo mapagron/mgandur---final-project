@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Week 6: Transitions, Events, and the Constructor Pattern</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <style>
         
     .section {
@@ -119,17 +120,24 @@
         <div class="description">
           <p>The rate of unemployment in Colombia, which had state in the double digit demonstrates the challenges that the Colombian labor market has being struggling with.  </p>
           <hr>
-          <p>Informal employment is one of the tangibles consequences of this high rate which over the past decade remains on +20%. </p>
+          <p> </p>
         </div>
     </div>
     <div class="controls section">
       <div class="container">
         <div class="btn-toolbar">
           <label for="Department">Department </label>
-          <select id="deparment">
-            <option value="all">All Departments (2010&ndash;2015)</option>
+          <select id="department">
+            <option value="all">All</option>
             <option value="Amazonas">Amazonas</option>
             <option value="Antioquia">Antioquia</option>
+            <option value="Arauca">Arauca</option>
+            <option value="Atlántico">Atlántico</option>
+            <option value="Bolívar">Bolívar</option>
+            <option value="Boyacá">Boyacá</option>
+            <option value="Caldas">Caldas</option>
+            <option value="Caquetá">Caquetá</option>
+            <option value="Casanare">Casanare</option>
           </select>
         </div>
       </div>
@@ -145,15 +153,10 @@
 
       
 
+      var txData = [];
+      var groupedData = [];
+      var genders = ["feminine" ,"masculine"];
 
-      var data = [
-      {"felony":"a","f":51419,"m":65110},
-      {"felony":"h","f":7175,"m":79751},
-      {"felony":"S","f":61170,"m":10102}]
-
-
-      var xData = ["f", "m"];
-       
       var margin = {top: 20, right: 50, bottom: 30, left: 50},
               width = 1200 - margin.left - margin.right,
               height = 800 - margin.top - margin.bottom;
@@ -176,30 +179,64 @@
               .append("g")
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      //d3.csv('stacktest.csv', function (error, json) {
-        //if (error) { throw error; }
-        //data = json;
 
-        var dataIntermediate = xData.map(function (c) {
-            return data.map(function (d) {
-                return {x: d.felony, y: d[c]};
-            });
+      d3.csv('gender.csv', function (error, json) {
+        if (error) { throw error; }
+        data = json;
+        
+        
+
+        // Set the event handler for selecting a department
+        d3.select('#department').on('change', function () {
+
+          // Filter the data
+          var dat = data.slice();
+          var department = d3.event.target.value;
+
+          //console.log(dat);
+          //console.log(department);
+          
+          // Get the data for one department
+          dat = dat.filter( function (data) {
+            return ( data.department == department );
+          } );
+
+          //console.log(dat);
+
+          // Group the data by felonies and gender
+          groupedData = genders.map(function (c) {
+              return dat.map(function (d) {
+                  return {x: d.felony, y: d[c]};
+              });
+          });
+
+          //console.log(groupedData);
+ 
+            update();
+          });
+
         });
+
+
          
-        var dataStackLayout = d3.layout.stack()(dataIntermediate);
+      // Update the chart every time a filter is selected
+      function update( )
+      {
+
+        var barChart = d3.layout.stack()(groupedData);
          
-        x.domain(dataStackLayout[0].map(function (d) {
+        x.domain(barChart[0].map(function (d) {
             return d.x;
         }));
-         
+
         y.domain([0,
-            d3.max(dataStackLayout[dataStackLayout.length - 1],
+            d3.max(barChart[barChart.length - 1],
                     function (d) { return d.y0 + d.y;})
             ])
           .nice();
          
         var layer = svg.selectAll(".stack")
-                .data(dataStackLayout)
+                .data(barChart)
                 .enter().append("g")
                 .attr("class", "stack")
                 .style("fill", function (d, i) {
@@ -226,7 +263,8 @@
                 .attr("class", "axis")
                 .attr("transform", "translate(0," + height + ")")
                 .call(xAxis);
-      //});
+      }
+
     </script>
   </body>
 </html>
