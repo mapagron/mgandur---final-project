@@ -118,28 +118,12 @@
     </div>
     <div class= "description problem">
         <div class="description">
-          <p>The rate of unemployment in Colombia, which had state in the double digit demonstrates the challenges that the Colombian labor market has being struggling with.  </p>
+          <p>Homicides and Sexual Assault in Colombia - 2010 - 2015 </p>
           <hr>
           <p> </p>
         </div>
     </div>
-    <div class="controls section">
-      <div class="container">
-        <div class="btn-toolbar">
-          <label for="Department">Department </label>
-          <select id="department">
-            <option value="all">All</option>
-            <option value="Amazonas">Amazonas</option>
-            <option value="Antioquia">Antioquia</option>
-            <option value="Arauca">Arauca</option>
-            <option value="Atlántico">Atlántico</option>
-            <option value="Bolívar">Bolívar</option>
-            <option value="Boyacá">Boyacá</option>
-            <option value="Caldas">Caldas</option>
-            <option value="Caquetá">Caquetá</option>
-            <option value="Casanare">Casanare</option>
-          </select>
-        </div>
+            </div>
       </div>
     </div>
     <div class="main section">
@@ -153,9 +137,7 @@
 
       
 
-      var txData = [];
-      var groupedData = [];
-      var genders = ["feminine" ,"masculine"];
+      //var fel = ["apob",  "hpob",  "spob"];
 
       var margin = {top: 20, right: 50, bottom: 30, left: 50},
               width = 1200 - margin.left - margin.right,
@@ -164,10 +146,9 @@
       var x = d3.scale.ordinal()
               .rangeRoundBands([0, width], .35);
        
-      var y = d3.scale.linear()
-              .rangeRound([height, 0]);
-       
-      var color = d3.scale.category20();
+      var y = d3.scale.log()
+              .ticks(10)
+              
        
       var xAxis = d3.svg.axis()
               .scale(x)
@@ -180,93 +161,20 @@
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-      d3.csv('gender.csv', function (error, json) {
+      d3.csv('stacktest.csv', function (error, json) {
         if (error) { throw error; }
         data = json;
         
+        console.log(data)
+
+                  
+
+
+
+
+
+
         
-
-        // Set the event handler for selecting a department
-        d3.select('#department').on('change', function () {
-
-          // Filter the data
-          var dat = data.slice();
-          var department = d3.event.target.value;
-
-          //console.log(dat);
-          //console.log(department);
-          
-          // Get the data for one department
-          dat = dat.filter( function (data) {
-            return ( data.department == department );
-          } );
-
-          //console.log(dat);
-
-          // Group the data by felonies and gender
-          groupedData = genders.map(function (c) {
-              return dat.map(function (d) {
-                  return {x: d.felony, y: d[c]};
-              });
-          });
-
-          //console.log(groupedData);
- 
-            update();
-          });
-
-        });
-
-
-         
-      // Update the chart every time a filter is selected
-      function update( )
-      {
-
-        var barChart = d3.layout.stack()(groupedData);
-         
-        x.domain(barChart[0].map(function (d) {
-            return d.x;
-        }));
-
-        y.domain([0,
-            d3.max(barChart[barChart.length - 1],
-                    function (d) { return d.y0 + d.y;})
-            ])
-          .nice();
-         
-        var layer = svg.selectAll(".stack")
-                .data(barChart)
-                .enter().append("g")
-                .attr("class", "stack")
-                .style("fill", function (d, i) {
-                    return color(i);
-                });
-         
-        layer.selectAll("rect")
-                .data(function (d) {
-                    return d;
-                })
-                .enter().append("rect")
-                .attr("x", function (d) {
-                    return x(d.x);
-                })
-                .attr("y", function (d) {
-                    return y(d.y + d.y0);
-                })
-                .attr("height", function (d) {
-                    return y(d.y0) - y(d.y + d.y0);
-                })
-                .attr("width", x.rangeBand());
-         
-        svg.append("g")
-                .attr("class", "axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
-      }
-
-      update();
-      
     </script>
   </body>
 </html>

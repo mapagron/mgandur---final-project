@@ -76,16 +76,6 @@
   <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
   <script>
 
-    // name of variables: 
-    // department = Colombia has 32 departments
-    // assault= total victims assault and battery (22010 - 2015)
-    // homicide = total victims homicide (2010-2015)
-    // sexual = total victims sexual assault (2010-2015)
-    // info = descriptive variable for the  department 
-    // vicon = total victims of conflict (2010 - 2015)
-    // index = index of conflict - 1 to 4 1; most affected one. 
-
-
     // info is a parameter that is expected between the parenthesis when you call the function
     function setInfo( info ) {
 
@@ -135,7 +125,7 @@
       .offset([-6, 0])
       .html(function(d) {
 
-        console.log( d );
+        
 
         if( d.index == 4 ){
           return d.department; // no using "" because we need the variable 

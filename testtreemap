@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colombia Colombia: Sexual Assault, Homicides, and Battery </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <style>
+  </style>
+
+</head>
+
+<body>
+<script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
+  <script type="text/javascript" src="https://npmcdn.com/science@1.9.3/science.v1.min.js"></script>
+  <script type="text/javascript" src="https://npmcdn.com/simple-statistics@2.0.0/dist/simple-statistics.min.js"></script>
+  <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
+  <script>
+
+  var svg = d3.select("body").append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+              .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  d3.csv('gender.csv', function (error, json) {
+        if (error) { throw error; }
+        data = json;
+
+  	var treemap = d3.layout.treemap()
+  		.size [(500 , 500)]
+  		.nodes (data)
+
+  	var square = svg.selectAll(".square")
+  		.data(treemap)
+  		.enter()
+  		.append("g")    
+  		.attr("class", "square")
+
+  	square.append = ("rect")
+  		.attr ("x", function (d) { return d.x;})
+  		.attr ("y", function (d) { return d.y;})
+  		.attr ("height", function (d) { return d(d.x);})
+  		.attr ("width", function (d) { return d(d.x);})
+
+
+               
+
+  </script>
+  
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 6: Transitions, Events, and the Constructor Pattern</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <style>
+  </style>
+</head>
+<body>
+    <div class="header section">
+      <div class="container">
+        <h1>Colombia</h1>
+        <p> (2000 - 2016)</p>
+      </div>
+    </div>
+    <div class= "description problem">
+        <div class="description">
+          <p>The rate of unemployment in Colombia, which had state in the double digit demonstrates the challenges that the Colombian labor market has being struggling with.  </p>
+          <hr>
+          <p>Informal employment is one of the tangibles consequences of this high rate which over the past decade remains on +20%. </p>
+        </div>
+    </div>
+    <div class="controls section">
+      <div class="container">
+        <div class="btn-toolbar">
+          <label for="Department">Department </label>
+          <select id="deparment">
+            <option value="all">All Departments (2010&ndash;2015)</option>
+            <option value="Amazonas">Amazonas</option>
+            <option value="Antioquia">Antioquia</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="main section">
+      <div class="container">
+        <div id="chart1"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
+    <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
+    <script>
+
+    d3.csv('datall.csv', function (error, json) {
+        if (error) { throw error; }
+        data = json;
+
+    return d3.nest().key(function(d)  {
+    return d.department;
+	}).entries(data);
+
+	console.log(data);
+
+
+    </script>
+  </body>
+</html>
