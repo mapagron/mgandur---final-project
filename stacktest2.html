@@ -3,110 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Week 6: Transitions, Events, and the Constructor Pattern</title>
+  <title>TEST: Stackbar </title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <style>
-        
-    .section {
-      padding: 1em 0;
-    }
-    .header {
-      background: linear-gradient(to bottom, #404040 0%, #262626 100%);
-      color: white;
-      padding: 1em 0 2em;
-    }
-    
-    .description div {
-        background-color: grey;
-        color: white;
-        margin: 20px 0 20px 0;
-        padding: 20px;
-        float:left
-      }
-
-
-    svg {
-      display: block;
-      margin: 0 auto;
-    }
-    .axis path, .axis line {
-      fill: none;
-      stroke: #ccc;
-      shape-rendering: crispEdges;
-    }
-    .axis text {
-      font-size: 11px;
-    }
-    .label {
-      font-weight: 700;
-    }
-
-    /* style for the histograms. Source http://bl.ocks.org/mbostock/3048450*/ 
-    .bar {
-      fill: #337ab7;
-    }
-    .bar:hover {
-      fill: #135a97;
-    }
-
-    .bar2 {
-      fill: #337ab7;
-    }
-    .bar2:hover {
-      fill: #135a97;
-    }
-    .bar rect {
-      fill:grey;
-    }
-    .bar text {
-      fill: #fff;
-      font: 10px sans-serif;
-    }
-
-    .bar2 rect {
-      fill: lime;
-    }
-    .bar2 text {
-      fill: #fff;
-      font: 10px sans-serif;
-    }
-
-    .tooltip {
-      padding: .5em 1em;
-      background: rgba(0,0,0,.75);
-      color: white;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1;
-    }
-    
-
-    .point {
-      stroke: rgb(51, 122, 183);
-      stroke-width: 1;
-      fill: rgba(51, 122, 183, .5);
-      opacity: .5;
-    }
-    .point.filtered {
-      opacity: .05;
-    }
-    
-    .line {
-      stroke: rgb(175, 80, 75);
-      stroke-width: 2;
-    }
-    /*Style for the grid example from http://www.d3noob.org/2013/01/adding-grid-lines-to-d3js-graph.html*/ 
-    .grid .tick {
-      stroke: lightgrey;
-    opacity: 0.7;
-    }
-    .grid path {
-      stroke-width: 0;
-    }
-    
-
-    
   </style>
 </head>
 <body>
@@ -118,7 +18,7 @@
     </div>
     <div class= "description problem">
         <div class="description">
-          <p>The rate of unemployment in Colombia, which had state in the double digit demonstrates the challenges that the Colombian labor market has being struggling with.  </p>
+          <p> August 07 - 1. check the scale (something is wrong with it) </p>
           <hr>
           <p> </p>
         </div>
@@ -132,34 +32,55 @@
             <option value="Amazonas">Amazonas</option>
             <option value="Antioquia">Antioquia</option>
             <option value="Arauca">Arauca</option>
-            <option value="Atlántico">Atlántico</option>
-            <option value="Bolívar">Bolívar</option>
-            <option value="Boyacá">Boyacá</option>
+            <option value="Atlantico">Atlantico</option>
+            <option value="Bolivar">Bolivar</option>
+            <option value="Boyaca">Boyacá</option>
             <option value="Caldas">Caldas</option>
-            <option value="Caquetá">Caquetá</option>
+            <option value="Caqueta">Caqueta</option>
             <option value="Casanare">Casanare</option>
+            <option value="Cauca">Cauca</option>
+            <option value="Cesar">Cesar</option>
+            <option value="Choco">Choco</option>
+            <option value="Cordoba">Cordoba</option>
+            <option value="Cundinamarca">Cundinamarca</option>
+            <option value="Guainia">Guainia</option>
+            <option value="Guaviare">Guaviare</option>
+            <option value="Huila">Huila</option>
+            <option value="Magdalena">Magdalena</option>
+            <option value="Meta">Meta</option>
+            <option value="Nariño">Nariño</option>
+            <option value="Norte de Santander">Norte de Santander</option>
+            <option value="Putumayo">Putumayo</option>
+            <option value="Quindio">Quindio</option>
+            <option value="Risaralda">Risaralda</option>
+            <option value="San Andres">San Andres</option>
+            <option value="Santander">Santander</option>
+            <option value="Sucre">Sucre</option>
+            <option value="Tolima">Tolima</option>
+            <option value="Valle">Valle</option>
+            <option value="Vaupes">Vaupes</option>
+            <option value="Vichada">Vichada</option>
           </select>
         </div>
       </div>
     </div>
     <div class="main section">
       <div class="container">
-        <div id="chart1"></div>
+        <div id="chart"></div>
         </div>
     </div>
     <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
     <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
     <script>
-
       
-
       var txData = [];
+      var filteredData = [];
       var groupedData = [];
       var genders = ["feminine" ,"masculine"];
 
       var margin = {top: 20, right: 50, bottom: 30, left: 50},
-              width = 1200 - margin.left - margin.right,
-              height = 800 - margin.top - margin.bottom;
+              width = 600 - margin.left - margin.right,
+              height = 400 - margin.top - margin.bottom;
        
       var x = d3.scale.ordinal()
               .rangeRoundBands([0, width], .35);
@@ -173,55 +94,75 @@
               .scale(x)
               .orient("bottom");
        
-      var svg = d3.select("body").append("svg")
-              .attr("width", width + margin.left + margin.right)
-              .attr("height", height + margin.top + margin.bottom)
-              .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      var svg;
 
 
+      // Calling the data 
       d3.csv('gender.csv', function (error, json) {
         if (error) { throw error; }
         data = json;
         
+        setup();
+        update("all");
+      });
+
         
+
+      function setup() {
+      
+        // SVG
+        svg = d3.select('#chart')
+          .append('svg')
+          .attr('width', width)
+          .attr('height', height);
+    
+        // SCALES
+        var x = d3.scale.ordinal()
+              .rangeRoundBands([0, width], .35);
+       
+        var y = d3.scale.linear()
+              .rangeRound([height, 0]);
+    
+        // AXES
+        // EVENT HANDLERS
+
 
         // Set the event handler for selecting a department
         d3.select('#department').on('change', function () {
 
-          // Filter the data
-          var dat = data.slice();
           var department = d3.event.target.value;
+          update(department);
+        });
+      }
 
-          //console.log(dat);
-          //console.log(department);
+      function update(department) {
+        // TRANSFORM
+        svg.selectAll( "*" ).remove( ); // adding this so the bars go away every time a filter is activate it. 
+        
+        // Filter the data
+        filteredData = data.slice();
+
+        if( department !== "all" )
+        {
+          //console.log(filteredData);
           
           // Get the data for one department
-          dat = dat.filter( function (data) {
+          filteredData = filteredData.filter( function (data) {
             return ( data.department == department );
-          } );
-
-          //console.log(dat);
-
-          // Group the data by felonies and gender
-          groupedData = genders.map(function (c) {
-              return dat.map(function (d) {
-                  return {x: d.felony, y: d[c]};
-              });
           });
+        }
 
-          //console.log(groupedData);
- 
-            update();
+        // Group the data by felonies and gender
+        groupedData = genders.map(function (c) {
+          return filteredData.map(function (d) {
+            return {x: d.felony, y: d[c]};
           });
-
         });
+          
+        // TESTING - STACK 
 
-
-         
-      // Update the chart every time a filter is selected
-      function update( )
-      {
+        //console.log( groupedData);
+        // the data is grouped correctly 
 
         var barChart = d3.layout.stack()(groupedData);
          
@@ -263,9 +204,8 @@
                 .attr("class", "axis")
                 .attr("transform", "translate(0," + height + ")")
                 .call(xAxis);
+        
       }
-
-      update();
       
     </script>
   </body>

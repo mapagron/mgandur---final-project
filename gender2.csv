@@ -1,0 +1,97 @@
+department,felony,feminine,masculine
+Amazonas,assault,2.120573931,2.28780173
+Antioquia,assault,3.28780173,3.415140352
+Arauca,assault,2.848189117,2.992995098
+Atlantico,assault,3.660106222,3.748575617
+Bolivar,assault,3.30427505,3.449169732
+Boyaca,assault,3.075546961,3.24723655
+Caldas,assault,2.57054294,2.748962861
+Caqueta,assault,2.922725458,3.080987047
+Casanare,assault,2.536558443,2.741939078
+Cauca,assault,2.725911632,2.914871818
+Cesar,assault,2.976349979,3.155336037
+Choco,assault,2.604226053,2.809559715
+Cordoba,assault,2.988558957,3.096562438
+Cundinamarca,assault,3.858537198,3.861773297
+Guainia,assault,1.278753601,1.462397998
+Guajira,assault,3.121231455,3.250663919
+Guaviare,assault,1.919078092,2.06069784
+Huila,assault,3.593064432,3.678062905
+Magdalena,assault,3.05804623,3.229169703
+Meta,assault,3.375663614,3.504198919
+Nariño,assault,3.636387586,3.656385719
+Norte De Santander,assault,3.313234292,3.449478399
+Putumayo,assault,2.902546779,2.975431809
+Quindio,assault,2.46834733,2.553883027
+Risaralda,assault,2.523746467,2.710117365
+San Andres,assault,1.792391689,1.755874856
+Santander,assault,3.529558673,3.695218919
+Sucre,assault,3.079181246,3.244277121
+Tolima,assault,2.925312091,3.050379756
+Valle,assault,3.844663528,3.936161741
+Vaupes,assault,0.77815125,1.278753601
+Vichada,assault,1.880813592,2.086359831
+Amazonas,homicide,0.477121255,1.819543936
+Antioquia,homicide,3.077004327,4.143701629
+Arauca,homicide,1.826074803,2.851258349
+Atlantico,homicide,2.346352974,3.476831629
+Bolivar,homicide,2.206825876,3.330616667
+Boyaca,homicide,1.973127854,2.775974331
+Caldas,homicide,2.181843588,3.220631019
+Caqueta,homicide,2.103803721,3.129367596
+Casanare,homicide,1.748188027,2.613841822
+Cauca,homicide,2.447158031,3.493179121
+Cesar,homicide,2.133538908,3.090258053
+Choco,homicide,1.897627091,2.975891136
+Cordoba,homicide,2.311753861,3.340444115
+Cundinamarca,homicide,3.005180513,3.987174501
+Guainia,homicide,0.301029996,0.954242509
+Guajira,homicide,1.892094603,3.057666104
+Guaviare,homicide,1.414973348,2.411619706
+Huila,homicide,2.212187604,3.193958978
+Magdalena,homicide,2.11058971,3.212986185
+Meta,homicide,2.340444115,3.275311355
+Nariño,homicide,2.499687083,3.48586333
+Norte De Santander,homicide,2.36361198,3.4363217
+Putumayo,homicide,2.075546961,2.98721923
+Quindio,homicide,2.100370545,3.113609151
+Risaralda,homicide,2.235528447,3.318480725
+San Andres,homicide,1.041392685,2.037426498
+Santander,homicide,2.281033367,3.241297387
+Sucre,homicide,1.857332496,2.88422877
+Tolima,homicide,2.243038049,3.284881715
+Valle,homicide,3.128076013,4.240823716
+Vaupes,homicide,0,1.079181246
+Vichada,homicide,1.113943352,2.025305865
+Amazonas,sexual assault,2.503790683,1.740362689
+Antioquia,sexual assault,3.636086515,2.846955325
+Arauca,sexual assault,2.73239376,1.86923172
+Atlantico,sexual assault,3.467756051,2.709269961
+Bolivar,sexual assault,3.292699003,2.496929648
+Boyaca,sexual assault,3.395151592,2.547774705
+Caldas,sexual assault,3.125481266,2.436162647
+Caqueta,sexual assault,3.082426301,2.260071388
+Casanare,sexual assault,2.700703717,1.799340549
+Cauca,sexual assault,3.07371835,2.178976947
+Cesar,sexual assault,2.974971994,2.173186268
+Choco,sexual assault,2.862131379,1.86332286
+Cordoba,sexual assault,3.169674434,2.235528447
+Cundinamarca,sexual assault,3.924795996,3.128399269
+Guainia,sexual assault,1.662757832,0.77815125
+Guajira,sexual assault,2.994317153,2.190331698
+Guaviare,sexual assault,2.243038049,1.51851394
+Huila,sexual assault,3.518777069,2.739572344
+Magdalena,sexual assault,3.171726454,2.28780173
+Meta,sexual assault,3.365113432,2.574031268
+Nariño,sexual assault,3.202215776,2.324282455
+Norte De Santander,sexual assault,3.244277121,2.57634135
+Putumayo,sexual assault,2.748962861,1.84509804
+Quindío,sexual assault,3.009450896,2.348304863
+Risaralda,sexual assault,3.317436497,2.57054294
+San Andres,sexual assault,1.944482672,1.278753601
+Santander,sexual assault,3.789721694,3.031004281
+Sucre,sexual assault,3.241546481,2.515873844
+Tolima,sexual assault,3.22297645,2.460897843
+Valle,sexual assault,3.888797067,3.141449773
+Vaupes,sexual assault,1.204119983,0.301029996
+Vichada,sexual assault,1.838849091,1.342422681
