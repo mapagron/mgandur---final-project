@@ -7,6 +7,22 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <style>
+  .axis path, .axis line {
+    fill: none;
+    stroke: grey;
+    shape-rendering: crispEdges;
+  }
+
+  .axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+  }
+
+  .label {
+    font-weight: 700;
+  }
+
+
   </style>
 </head>
 <body>
@@ -72,163 +88,180 @@
     <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
     <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
     <script>
-      // source for the stack: https://www.youtube.com/watch?v=n9kKdbzCiLI 
-      
-      var txData = [];
-      var filteredData = [];
-      var groupedData = [];
-      var genders = ["feminine" ,"masculine"];
-
-      //Width and height
-      var w = 500;
-      var h = 300;
-      var margin = {top: 20, right: 50, bottom: 30, left: 50};
-
-      //Easy colors accessible via a 10-step ordinal scale
-      var colors = d3.scale.category10();
-
-      var xAxis;
        
-      var svg;
-      
-      /*
+      function stack () {
 
-      function setup() {
-      
-       
-    
-        // AXES
-        xAxis = d3.svg.axis()
-              .scale(x)
-              .orient("bottom");
-
-        // EVENT HANDLERS
-
-
-        // Set the event handler for selecting a department
-        d3.select('#department').on('change', function () {
-
-          var department = d3.event.target.value;
-          update(department);
-        });
-      }
-      */
-      
-
-
-
-
-      // Calling the data 
-      //d3.csv('gender.csv', function (error, json) {
-        //if (error) { throw error; }
-        //data = json;
-      d3.csv('gender.csv',
-        function(d) {
-          return {
-            department: d.department,
-            felony: d.felony,
-            feminine: +d.feminine,
-            masculine: +d.masculine
-          };
-        }, 
-        function (error, json) {
-          if (error) { throw error; }
-          data = json;
-
-          setup();
-          update("all");
-      });
-
-      function setup( )
-      {
-        svg = d3.select("body")
-              .append("svg")
-              .attr('width', w + margin.left + margin.right)
-              .attr('height', h + margin.top + margin.bottom);
-
-        // Set the event handler for selecting a department
-        d3.select('#department').on('change', function () {
-
-          var department = d3.event.target.value;
-          update(department);
-        });
-      }
-
-      function update(department) {
-        // TRANSFORM
-        svg.selectAll( "*" ).remove( ); // adding this so the bars go away every time a filter is activate it.
+        // source for the stack: https://www.youtube.com/watch?v=n9kKdbzCiLI 
         
-        // Filter the data
-        filteredData = data.slice();
+        var txData = [];
+        var filteredData = [];
+        var groupedData = [];
+        var genders = ["feminine" ,"masculine"];
 
-        if( department !== "all" )
+        //Width and height
+        var w = 600;
+        var h = 400;
+        var margin = {top: 20, right: 50, bottom: 30, left: 50}; // 
+
+        //Easy colors accessible via a 10-step ordinal scale
+        var colors = d3.scale.category10();
+
+        // create a generic axis function
+        var xAxis; 
+        var yAxis;
+        var yScale;
+        var xScale;   
+
+        var svg;
+
+        var padding = 0; 
+
+
+        
+        // Calling the data 
+      d3.csv('gender.csv',
+          function(d) {
+            return {
+              department: d.department,
+              felony: d.felony,
+              feminine: +d.feminine,
+              masculine: +d.masculine
+            };
+          }, 
+          function (error, json) {
+            if (error) { throw error; }
+            data = json;
+
+            setup();
+            update("all");
+        });
+
+        function setup( )
         {
-          //console.log(filteredData);
-          
-          // Get the data for one department
-          filteredData = filteredData.filter( function (data) {
-            return ( data.department == department );
+          svg = d3.select("body")
+                .append("svg")
+                .attr('width', w + margin.left + margin.right)
+                .attr('height', h + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+                     
+          // Set the event handler for selecting a department
+          d3.select('#department').on('change', function () {
+
+            var department = d3.event.target.value;
+            update(department);
           });
         }
 
-        // Group the data by felonies and gender
-        groupedData = genders.map(function (c) {
-          return filteredData.map(function (d) {
-            return {x: d.felony, y: d[c]};
-          });
-        });
-        
-
-        //Set up stack method
-        var stack = d3.layout.stack();
-
-        //Data, stacked
-        stack(groupedData);
-
-
-        console.log( groupedData );
-
-        //Set up scales
-        var xScale = d3.scale.ordinal()
-          .domain(d3.range(groupedData[0].length))
-          .rangeRoundBands([0, w], 0.05);
-      
-        var yScale = d3.scale.linear()
-          .domain([0,       
-            d3.max(groupedData, function(d) {
-              return d3.max(d, function(d) {
-                return d.y0 + d.y;
-              });
-            })
-          ])
-          .range([0, h]);
+        function update(department) {
+          // TRANSFORM
+          svg.selectAll( "*" ).remove( ); // adding this so the bars go away every time a filter is activate it.
           
-    
-        // Add a group for each row of data
-        var groups = svg.selectAll("g")
-          .data(groupedData)
-          .enter()
-          .append("g")
-          .style("fill", function(d, i) {
-            return colors(i);
+          // Filter the data
+          filteredData = data.slice();
+
+          if( department !== "all" )
+          {
+            //console.log(filteredData);
+            
+            // Get the data for one department
+            filteredData = filteredData.filter( function (data) {
+              return ( data.department == department );
+            });
+          }
+
+          // Group the data by felonies and gender
+          groupedData = genders.map(function (c) {
+            return filteredData.map(function (d) {
+              return {x: d.felony, y: d[c]};
+            });
           });
-    
-        // Add a rect for each data value
-        var rects = groups.selectAll("rect")
-          .data(function(d) { return d; })
-          .enter()
-          .append("rect")
-          .attr("x", function(d, i) {
-            return xScale(i);
-          })
-          .attr("y", function(d) {
-            return ( h - yScale(d.y) ) - yScale(d.y0);
-          })
-          .attr("height", function(d) {
-            return yScale(d.y);
-          })
-          .attr("width", xScale.rangeBand());
+          
+
+          //Set up stack method
+          var stack = d3.layout.stack();
+
+          //Data, stacked
+          stack(groupedData);
+
+
+          //console.log( groupedData );
+
+          //Set up scales
+          xScale = d3.scale.ordinal()
+            .domain(d3.range(groupedData[0].length))
+            .rangeRoundBands([0, w], 0.05);
+        
+          yScale = d3.scale.linear()
+            .domain([0,       
+              d3.max(groupedData, function(d) {
+                return d3.max(d, function(d) {
+                  return d.y0 + d.y;
+                });
+              })
+            ])
+            .range([h,0]);
+
+          //console.log( groupedData );
+
+          // Axis - 
+          xAxis = d3.svg.axis() 
+                  .scale(xScale)
+                  .tickFormat( function( index ){ return groupedData[0][index].x; } ) // to pass the labels din - from d.felony 
+                  .orient("bottom");
+
+          yAxis = d3.svg.axis()
+                  .scale(yScale)
+                  .orient("left")
+                  .ticks(5);
+      
+          // Add a group for each row of data
+          var groups = svg.selectAll("g")
+            .data(groupedData)
+            .enter()
+            .append("g")
+            .style("fill", function(d, i) {
+              return colors(i);
+            });
+      
+          // Add a rect for each data value
+          var rects = groups.selectAll("rect")
+            .data(function(d) { return d; })
+            .enter()
+            .append("rect")
+            .attr("x", function(d, i) {
+              return xScale(i);
+            })
+            .attr("y", function(d) {
+              return yScale(d.y + d.y0);
+            })
+            .attr("height", function(d) {
+              return yScale(d.y0) - yScale(d.y + d.y0);
+            })
+            .attr("width", xScale.rangeBand());
+
+          // adding Axis. 
+          xAxis = svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (h - padding) + ")")
+                .call(xAxis);
+
+          yAxis = svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + padding + ",0)")
+                .call(yAxis);
+
+
+            // References: 
+            // Axis - http://alignedleft.com/tutorials/d3/axes 
+            // Stack bar - https://bl.ocks.org/mbostock/1134768
+        }
+
       }
+
+      stack (); 
+
     </script>
   </body>
 </html>

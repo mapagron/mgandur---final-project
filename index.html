@@ -92,116 +92,118 @@
       // This function doesn't need to return anything
     }
 
+    
+    function bubble () {
 
-    // Creating a Basic Bubble Chart 
-    // Source // https://bl.ocks.org/mbostock/4063269 
-    // Source // http://jrue.github.io/coding/
-    // documentation: https://github.com/d3/d3-3.x-api-reference/blob/master/Pack-Layout.md 
-    // TODO: How to categorize the bubbles as complex as this code 
-    // JUL 26 - Index + something not working + q:layout + q: data+json 
-    // JUL 26: ASK THEM -- DATA how can I create the nodes in data.json without do it manually? ; 
-    // JUL 26: text align left is not working -- check 
-    // JUL 26: background color - check for a good scheme of colors -- nothing looks nice. 
-    // JUL 26: check out how to add color schemes 
-    // JUL 26: the +info function works if we click on the circle - figure out how to higlight the circle once is clicked. - tooltip - transitions? 
-    // JUL 28: d3.nest 
-
-    var width = 1000;
-    var height = 800;
-    //var c20c = d3.scale.category20c(); pending to make it work 
       
-    var svg = d3.select("body").append("svg")
-          .attr("width", width)
-          .attr("height" , height)
-          .append("g")
-            .attr("transform" , "translate (50, 50)"); 
 
-    var pack = d3.layout.pack()
-          .size([width, height - 50])
-          .padding(10); 
 
-    var tooltip = d3.tip()
-      .attr('class', 'tooltip')
-      .offset([-6, 0])
-      .html(function(d) {
+      // Creating a Basic Bubble Chart 
+      // Source // https://bl.ocks.org/mbostock/4063269 
+      // Source // http://jrue.github.io/coding/
+      // documentation: https://github.com/d3/d3-3.x-api-reference/blob/master/Pack-Layout.md 
+      // TODO: How to categorize the bubbles as complex as this code 
+      // JUL 26 - Index + something not working + q:layout + q: data+json 
+      // JUL 26: ASK THEM -- DATA how can I create the nodes in data.json without do it manually? ; 
+      // JUL 26: text align left is not working -- check 
+      // JUL 26: background color - check for a good scheme of colors -- nothing looks nice. 
+      // JUL 26: check out how to add color schemes 
+      // JUL 26: the +info function works if we click on the circle - figure out how to higlight the circle once is clicked. - tooltip - transitions? 
+      // JUL 28: d3.nest 
 
+      var width = 1000;
+      var height = 800;
+      //var c20c = d3.scale.category20c(); pending to make it work 
         
+      var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height" , height)
+            .append("g")
+              .attr("transform" , "translate (50, 50)"); 
 
-        if( d.index == 4 ){
-          return d.department; // no using "" because we need the variable 
-        }
-        else {
-          return null;
-        }
+      var pack = d3.layout.pack()
+            .size([width, height - 50])
+            .padding(10); 
+
+      var tooltip = d3.tip()
+        .attr('class', 'tooltip')
+        .offset([-6, 0])
+        .html(function(d) {
+
           
-           
-       });
 
-    tooltip(svg);
-
-
-    d3.json('data2.json', function (error, json) {
-      if (error) { throw error; }
-      data = json;
-
-      var nodes = pack.nodes(data); 
-
-      var node = svg.selectAll(".node")
-        .data(nodes)
-        .enter()
-        .append("g")  
-          .attr("class", "node")
-          .attr("transform", function (d) { return "translate(" +d.x + "," + d.y + ")"; }); // this is not about the function is about the html position
-
-      node.append("circle")
-        .attr("r", function (d) { return d.r; }) 
-        .attr("fill", function (d) { 
-          if( d.children )
-          {
-            return "#AAA";
+          if( d.index == 4 ){
+            return d.department; // no using "" because we need the variable 
           }
-          else
-          {
-            if( d.index == 1 ){
-              return "blue";
-            } 
-            else if( d.index == 2 ){
-              return "orange";
-            }
-            else if( d.index == 3 ){
-              return "black";
-            }
-            else if( d.index == 4 ){
-              return "red";
-            }
-            else {
-              return "green";
-            }
+          else {
+            return null;
           }
-        })
-        .attr("opacity", 0.15)
-        .attr("stroke", function (d) { return d.children ? "#fff" : "#000"; })
-        .attr("stroke-width", "2")
-        .attr( "onclick", function (d) { return "setInfo( '" + d.info + "' );" } )
-        .on( 'mouseover', tooltip.show )
-        .on( 'mouseout', tooltip.hide );
+            
+             
+         });
 
-      node.append ("text")
-        //.attr("r", 0) Place the data starting at the point 0,0 of the circle - does not look so good
-        .attr("text-anchor", "middle")
-        // if has chidlren OR index iqual to 4 return empty otherwise return d.department 
-        .text(function (d) { return (d.children || d.index ==4) ? "" : d.department; }) // Ternary operator
-        .attr("color", "blue")
-        .attr( "onclick", function (d) { return "setInfo( '" + d.info + "' );" } );
-        
-        // BARCHART
+      tooltip(svg);
 
 
+      d3.json('data2.json', function (error, json) {
+        if (error) { throw error; }
+        data = json;
 
+        var nodes = pack.nodes(data); 
 
-    });
+        var node = svg.selectAll(".node")
+          .data(nodes)
+          .enter()
+          .append("g")  
+            .attr("class", "node")
+            .attr("transform", function (d) { return "translate(" +d.x + "," + d.y + ")"; }); // this is not about the function is about the html position
 
-    // if d.children is defined
+        node.append("circle")
+          .attr("r", function (d) { return d.r; }) 
+          .attr("fill", function (d) { 
+            if( d.children )
+            {
+              return "#AAA";
+            }
+            else
+            {
+              if( d.index == 1 ){
+                return "blue";
+              } 
+              else if( d.index == 2 ){
+                return "orange";
+              }
+              else if( d.index == 3 ){
+                return "black";
+              }
+              else if( d.index == 4 ){
+                return "red";
+              }
+              else {
+                return "green";
+              }
+            }
+          })
+          .attr("opacity", 0.15)
+          .attr("stroke", function (d) { return d.children ? "#fff" : "#000"; })
+          .attr("stroke-width", "2")
+          .attr( "onclick", function (d) { return "setInfo( '" + d.info + "' );" } )
+          .on( 'mouseover', tooltip.show )
+          .on( 'mouseout', tooltip.hide );
+
+        node.append ("text")
+          //.attr("r", 0) Place the data starting at the point 0,0 of the circle - does not look so good
+          .attr("text-anchor", "middle")
+          // if has chidlren OR index iqual to 4 return empty otherwise return d.department 
+          .text(function (d) { return (d.children || d.index ==4) ? "" : d.department; }) // Ternary operator
+          .attr("color", "blue")
+          .attr( "onclick", function (d) { return "setInfo( '" + d.info + "' );" } );
+          
+          // BARCHART
+
+      });
+
+        // if d.children is defined
     /*
     if( d.children != undefined )
     {
@@ -212,6 +214,11 @@
       return d.department;
     }
     */
+
+    }
+
+    bubble();  
+
   </script>
   
 </body>
