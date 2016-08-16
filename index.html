@@ -55,6 +55,14 @@
       display: none;
     }
 
+    #reset {
+      display: none;
+    }
+
+    #compare {
+      display: none;
+    } 
+
   </style>
 
 
@@ -133,7 +141,7 @@
   <div class="btn-toolbar">
       <div class="btn-group">
         <button type="button" class="btn btn-default" id="compare">Compare</button>
-        <button type="button" class="btn btn-default" id="start over">Start Over</button>
+        <button type="button" class="btn btn-default" id="reset">Reset</button>
       </div>
   </div>
 
@@ -145,14 +153,23 @@
   
   <script>
 
-    document.getElementById('compare').addEventListener('click', function () {
+    d3.select("#compare")
+      .on("click", function (d) {
+
       
       d3.select( "#bubble-chart-wrapper" )
         .style("display" , "none");
 
       d3.select( "#comparison-chart-wrapper" )
         .style("display" , "inline-block");
-    } );
+
+
+      d3.select("#reset")
+        .style("display", "inline-block");
+
+      d3.select("#compare")
+      .style("display", "none"); 
+    });
 
     var bubbleData;
     var bubble;
@@ -271,7 +288,7 @@
       }
 
       // info is a parameter that is expected between the parenthesis when you call the function
-      Bubble.prototype.setInfo = function( department, info ) {
+      thisBubble.setInfo = function( department, info ) {
 
         // document is a predefined object that represents the page
         // its going to return an array of elements (SSSSS plural)
@@ -280,11 +297,19 @@
 
         var description = d3.select( "#description" )[ 0 ][ 0 ]; //this returns a single element 
 
-        
+        d3.select("[value='" + department + "']") 
+          .attr ("disabled", "disabled");
+
+        d3.select("#compare")
+          .style ("display", "inline-block"); 
+
+
         // The innerHTML property represents the text/html within an element
         description.innerHTML = info;
 
         departmentStack.update( department );
+
+
 
         // This function doesn't need to return anything
       }
@@ -315,7 +340,14 @@
         departmentStack = new Stack("#info"); 
     });
 
+    // making the data
 
+    d3.select('#department').on('change', function () {
+
+      var department = d3.event.target.value;
+      comparisonStack.update(department);
+      
+    });
 
     function Stack (targetSelector) {
       var thisStack = this;
@@ -349,23 +381,17 @@
                       .append('g')
                       .attr("id", targetSelector + "-svg")
                       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-        
+      
       
 
 
       // update is a member of stack
-      Stack.prototype.setup = function (){
+      thisStack.setup = function (){
 
-        // Set the event handler for selecting a department
-        d3.select('#department').on('change', function () {
-
-          var department = d3.event.target.value;
-          thisStack.update(department);
-        });
       }
 
       // update is a member of stack
-      Stack.prototype.update = function (department) {
+      thisStack.update = function (department) {
 
         // TRANSFORM
         thisStack.svg.selectAll( "*" ).remove( ); // adding this so the bars go away every time a filter is activate it.
