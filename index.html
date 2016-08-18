@@ -22,7 +22,9 @@
     .auxcontainer {
       background: #878C8F;
       padding: 1em 0 2em;
-      height: 50px; 
+      height: 52px;
+      color: white; 
+
     }
 
 
@@ -141,14 +143,14 @@
 
   <div class="header section">
     <div class="header">
-      <h1>Colombia: Sexual Assault, Homicides, and Battery </h1>
-      <p>Potential consequences of +60 years of internal conflict: 2010 - 2015 </p>
+      <h1>Colombia, 60 years of conflict and its impact on social structure (2000 - 2015)</h1>
+      <p>Assault, Battery and Homicides</p>
     </div>
   </div>
 
   <div class= "auxcontainer">
     
-    <p id="espPar">Potential consequences of +60 years of internal conflict: 2010 - 2015 </p>
+    <p id="espPar">Today Colombia has at least two recognized guerrilla groups (FARC and ELN) and at least 7 million deaths as a result of the conflict (six times Washington D.C population). Another consequence of the ongoing conflict is the negative impact on the social and economic structures as areas where the conflict is more intense have more risk having more felonies such as: homicides, sexual assaults, and battery.  </p>
 
     <div class="btn-toolbar">
         <div class="btn-group">
@@ -168,7 +170,7 @@
     </div>
 
     <div id="description">
-      The dataset includes more than 200,000 records of victims of homicides, sexual assaults, and battery during the period of 2010-2015. A row includes the date, the type and location of the felony, the gender, education level, and the age of the victim.
+      The graphical representations below are design by departaments. Colombia has 32 departments which can be categorized by The Index of Conflict which runs between 1 to 4. Where 1 is highly intense conflict with a permanent presence of a guerrilla group 365 days out of the year and 4 is barely any extended presence of a guerrilla group, and as a result, infrequent or low instances of conflict. 
     </div>
 
   </div>
@@ -238,7 +240,7 @@
 
     //legends data
      
-    bubbleLegendValues = ["Index 1: Intense Violence (800,000 victims - 180,000)", "Index 2: High-Violence (179.000 - 125.000 victims", "Index 3: Mid-violence", "Index 4: Low-Violece"];
+    bubbleLegendValues = ["Index 1: Intense Violence (800,000 - 180,000)", "Index 2: High-Violence (179.000 - 125.000)", "Index 3: Mid-violence (124.999 - 50.000) ", "Index 4: Low-Violece (49,000 or less)"];
       
     legendrange = d3.scale.category20().domain(bubbleLegendValues);
     console.log( legendrange );
