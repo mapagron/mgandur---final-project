@@ -604,7 +604,7 @@
               .style('text-anchor', 'middle')
               .text("#victims");
 
-        threshold2 = d3.svg.legend().labelFormat("none").cellPadding(5).orientation("vertical").units("genders").cellWidth(25).cellHeight(18).inputScale(legendrange2).cellStepping(10);
+        threshold2 = d3.svg.legend().labelFormat("none").cellPadding(5).orientation("vertical").units("gender").cellWidth(25).cellHeight(18).inputScale(legendrange2).cellStepping(10);
 
         thisStack.svg.append("g").attr("transform", "translate(250,10)").attr("class", "legend").call(threshold2);  
 
