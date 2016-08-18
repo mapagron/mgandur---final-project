@@ -5,32 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Colombia Colombia: Sexual Assault, Homicides, and Battery </title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed|Taviraj" rel="stylesheet">
+
   <style>
 
     .header {
-        background: linear-gradient(to bottom, #404040 0%, #262626 100%);
+        background: linear-gradient(to bottom, #114B5F 0%, #262626 100%);
         color: white;
-        text-align: left;
-        padding: 1em 0 2em;
+        text-align: right;
+        padding: 1em 0 3em;
+        height: 120px; 
+        font-family: 'Oswald', sans-serif;
       }
 
-    .description div {
-        background-color: #262626;
+
+    .auxcontainer {
+      background: #878C8F;
+      padding: 1em 0 2em;
+      height: 50px; 
+    }
+
+
+    #description {
+        background-color: #114B5F;
         color: white;
         margin: 20px 0 20px 0;
         padding: 20px;
         float:left;
+        font-family: 'Taviraj', serif;
       }
+
+
+
+    
 
     .column
     {
-      border: 2px solid #262626;
+      
       /* display dictates the orientation of the element */
       display: inline-block;
       /* Set vertical-align to top in order to align columns to the top of the page */
       vertical-align: top;
       width: 400px;
-      height: 600px;
+      /* width (1), style (solid/groove/dash), color  */
+     
     }
 
     .totals div {
@@ -47,8 +65,24 @@
       cursor: pointer; 
     }
 
+    #department {
+      display: block;
+    }
+
+    .label {
+      font-weight: 700;
+    }
+
+    .titlelabel {
+      font-weight: 700;
+    }
+
     #bubble-chart-wrapper {
       display: inline-block;
+      border-left-width: 1px;
+      border-left-style: dashed ;
+      border-left-color: #262626;
+
     }
 
     #comparison-chart-wrapper {
@@ -63,32 +97,75 @@
       display: none;
     } 
 
+    text {
+      fill: #373D3F;
+      word-spacing: 0.5px;
+      font-family: 'Taviraj', serif;
+      font-size: 12px;
+    }
+
+    button {
+      border-radius: 5px !important;
+    }
+
+    #bubble-legend g:nth-child(1) rect {
+      fill: #ED474A !important;
+    }
+
+    #bubble-legend g:nth-child(2) rect {
+      fill: #AF5D63 !important;
+    }
+
+    #bubble-legend g:nth-child(3) rect {
+      fill: #846075 !important;
+    }
+
+    #bubble-legend g:nth-child(4) rect {
+      fill: #4A6C6F !important;
+    }
+
   </style>
 
 
 
   <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
   <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
+  <script type="text/javascript" src="legend.js"></script>
 
-  <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
   <script type="text/javascript" src="https://npmcdn.com/science@1.9.3/science.v1.min.js"></script>
   <script type="text/javascript" src="https://npmcdn.com/simple-statistics@2.0.0/dist/simple-statistics.min.js"></script>
-  <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
 
 </head>
 
 <body>
 
   <div class="header section">
-    <div class="container">
+    <div class="header">
       <h1>Colombia: Sexual Assault, Homicides, and Battery </h1>
       <p>Potential consequences of +60 years of internal conflict: 2010 - 2015 </p>
+    </div>
+  </div>
+
+  <div class= "auxcontainer">
+    
+    <p id="espPar">Potential consequences of +60 years of internal conflict: 2010 - 2015 </p>
+
+    <div class="btn-toolbar">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" id="compare">Compare</button>
+          <button type="button" class="btn btn-default" id="reset">Reset</button>
+        </div>
     </div>
   </div>
 
   
 
   <div id="info" class="column"> <!-- sintax = attribute = value -->
+    <div id="department-title">
+    </div>
+    <div id="department-svg-wrapper">
+
+    </div>
 
     <div id="description">
       The dataset includes more than 200,000 records of victims of homicides, sexual assaults, and battery during the period of 2010-2015. A row includes the date, the type and location of the felony, the gender, education level, and the age of the victim.
@@ -123,7 +200,7 @@
       <option value="Huila">Huila</option>
       <option value="Magdalena">Magdalena</option>
       <option value="Meta">Meta</option>
-      <option value="Nariño">Nariño</option>
+      <option value="Narino">Narino</option>
       <option value="Norte de Santander">Norte de Santander</option>
       <option value="Putumayo">Putumayo</option>
       <option value="Quindio">Quindio</option>
@@ -138,12 +215,8 @@
     </select>
   </div>
 
-  <div class="btn-toolbar">
-      <div class="btn-group">
-        <button type="button" class="btn btn-default" id="compare">Compare</button>
-        <button type="button" class="btn btn-default" id="reset">Reset</button>
-      </div>
-  </div>
+
+
 
   <div class="totals">
     <div style="width: 454px;">Assault and battery 117964 victims</div>
@@ -152,6 +225,60 @@
   </div>
   
   <script>
+
+    var bubbleData;
+    var bubble;
+
+    var stackData;
+    var departmentStack;
+    var comparisonStack; 
+    var conflictIndexColors = ["#FFF" , "#ED474A", "#AF5D63", "#846075", "#4A6C6F" ];
+       
+
+
+    //legends data
+     
+    bubbleLegendValues = ["Index 1: Intense Violence (800,000 victims - 180,000)", "Index 2: High-Violence (179.000 - 125.000 victims", "Index 3: Mid-violence", "Index 4: Low-Violece"];
+      
+    legendrange = d3.scale.category20().domain(bubbleLegendValues);
+    console.log( legendrange );
+    //legendrange = (["blue", "red", "black", "orange"]).domain(bubbleLegendValues);
+
+    stackLegendValues = ["masculine", "feminine"];
+    legendrange2 = d3.scale.category20().domain(stackLegendValues);
+
+    d3.json('data2.json', function (error, json) {
+      if (error) { throw error; }
+      bubbleData = json;
+
+      bubble = new Bubble( );
+
+    });
+
+    // Calling the data 
+    d3.csv('gender.csv',
+      function(d) {
+        return {
+          department: d.department,
+          felony: d.felony,
+          feminine: +d.feminine,
+          masculine: +d.masculine
+        };
+      }, 
+      function (error, json) {
+        if (error) { throw error; }
+        stackData = json;
+
+        comparisonStack = new Stack("#comparison-chart-wrapper");
+        departmentStack = new Stack("#department-svg-wrapper"); 
+    });
+
+    d3.select('#department').on('change', function () {
+
+      var department = d3.event.target.value;
+      comparisonStack.update(department);
+      
+    });
 
     d3.select("#compare")
       .on("click", function (d) {
@@ -171,15 +298,21 @@
       .style("display", "none"); 
     });
 
-    var bubbleData;
-    var bubble;
 
-    d3.json('data2.json', function (error, json) {
-      if (error) { throw error; }
-      bubbleData = json;
+    d3.select("#reset")
+      .on("click", function (d) {
 
-      bubble = new Bubble( );
+    d3.select( "#comparison-chart-wrapper" )
+        .style("display" , "none");
+    
+    d3.select( "#bubble-chart-wrapper" )
+        .style("display" , "inline-block");
 
+      d3.select("#compare")
+        .style("display", "inline-block"); 
+
+      d3.select("#reset")
+        .style("display", "none"); 
     });
 
 
@@ -187,27 +320,14 @@
 
       var thisBubble = this;
 
-      // Creating a Basic Bubble Chart 
-      // Source // https://bl.ocks.org/mbostock/4063269 
-      // Source // http://jrue.github.io/coding/
-      // documentation: https://github.com/d3/d3-3.x-api-reference/blob/master/Pack-Layout.md 
-      // TODO: How to categorize the bubbles as complex as this code 
-      // JUL 26 - Index + something not working + q:layout + q: data+json 
-      // JUL 26: ASK THEM -- DATA how can I create the nodes in data.json without do it manually? ; 
-      // JUL 26: text align left is not working -- check 
-      // JUL 26: background color - check for a good scheme of colors -- nothing looks nice. 
-      // JUL 26: check out how to add color schemes 
-      // JUL 26: the +info function works if we click on the circle - figure out how to higlight the circle once is clicked. - tooltip - transitions? 
-      // JUL 28: d3.nest 
-
       var width =  600;
       var height = 600;
-      //var c20c = d3.scale.category20c(); pending to make it work 
-        
+              
       var svg = d3.select("#bubble-chart-wrapper").append("svg")
             .attr("width", width)
             .attr("height", height)
-            .append("g");
+            .append("g")
+            .attr( "transform", "translate(600,0)rotate( 90 )" );
 
       var pack = d3.layout.pack()
             .size([width, height])
@@ -242,38 +362,24 @@
           .enter()
           .append("g")  
             .attr("class", "node")
-            .attr("transform", function (d) { return "translate(" +d.x + "," + d.y + ")"; }); // this is not about the function is about the html position
+            .attr("transform", function (d) { return "translate(" +d.x + "," + d.y + ") rotate( -90 )"; }); // this is not about the function is about the html position
 
         node.append("circle")
           .attr("r", function (d) { return d.r; }) 
           .attr("fill", function (d) { 
             if( d.children )
             {
-              return "#AAA";
+              return "#FFFFFF";
             }
             else
             {
-              if( d.index == 1 ){
-                return "blue";
-              } 
-              else if( d.index == 2 ){
-                return "orange";
-              }
-              else if( d.index == 3 ){
-                return "black";
-              }
-              else if( d.index == 4 ){
-                return "red";
-              }
-              else {
-                return "green";
-              }
+              return conflictIndexColors[ d.index ];
             }
           })
-          .attr("opacity", 0.15)
-          .attr("stroke", function (d) { return d.children ? "#fff" : "#000"; })
+          .attr("opacity", 1.0)
+          .attr("stroke", function (d) { return d.children ? "#fff" : "#D3D3D3"; })
           .attr("stroke-width", "2")
-          .attr( "onclick", function (d) { return "bubble.setInfo( '" + d.department + "', '" + d.info + "' );" } )
+          .attr( "onclick", function (d) { return "bubble.setInfo( '" + d.department + "', '" + d.info + "', "+ d.index +" );" } )
           .on( 'mouseover', tooltip.show )
           .on( 'mouseout', tooltip.hide );
 
@@ -283,12 +389,21 @@
           // if has chidlren OR index iqual to 4 return empty otherwise return d.department 
           .text(function (d) { return (d.children || d.index ==4) ? "" : d.department; }) // Ternary operator
           .attr("color", "blue")
-          .attr( "onclick", function (d) { return "bubble.setInfo( '" + d.department + "', '" + d.info + "' );" } );
-          
+          .attr( "onclick", function (d) { return "bubble.setInfo( '" + d.department + "', '" + d.info + "', "+ d.index +" );" } );
+
+        // to create the legend using function legend.js 
+        threshold = d3.svg.legend().labelFormat("none").cellPadding(5).orientation("vertical").units("Index of Conflict - By Victims").cellWidth(25).cellHeight(18).inputScale(legendrange).cellStepping(10);
+
+        svg.append("g")
+              .attr("id", "bubble-legend")
+              .attr("transform", "translate(500,580) rotate(-90)")
+              .attr("class", "legend")
+              .call(threshold); 
+
       }
 
       // info is a parameter that is expected between the parenthesis when you call the function
-      thisBubble.setInfo = function( department, info ) {
+      thisBubble.setInfo = function( department, info, index ) {
 
         // document is a predefined object that represents the page
         // its going to return an array of elements (SSSSS plural)
@@ -302,6 +417,16 @@
 
         d3.select("#compare")
           .style ("display", "inline-block"); 
+
+        d3.select( "#department-title" )
+          .html(department + " ( Index of Conflict - " + index + ")" )
+          .style("color", conflictIndexColors[ index ] )
+          .style("text-align", "center")
+          .style("font-family", "'Oswald', sans-serif" )
+          .style("font-size", "20px");
+
+        d3.select("#espPar")
+          .style ("display", "none"); 
 
 
         // The innerHTML property represents the text/html within an element
@@ -318,37 +443,6 @@
     }
 
 
-    var stackData;
-    var departmentStack;
-    var comparisonStack; 
-
-    // Calling the data 
-    d3.csv('gender.csv',
-      function(d) {
-        return {
-          department: d.department,
-          felony: d.felony,
-          feminine: +d.feminine,
-          masculine: +d.masculine
-        };
-      }, 
-      function (error, json) {
-        if (error) { throw error; }
-        stackData = json;
-
-        comparisonStack = new Stack("#comparison-chart-wrapper");
-        departmentStack = new Stack("#info"); 
-    });
-
-    // making the data
-
-    d3.select('#department').on('change', function () {
-
-      var department = d3.event.target.value;
-      comparisonStack.update(department);
-      
-    });
-
     function Stack (targetSelector) {
       var thisStack = this;
       // source for the stack: https://www.youtube.com/watch?v=n9kKdbzCiLI 
@@ -361,16 +455,18 @@
       //Width and height
       var w = 250;
       var h = 300;
-      var margin = {top: 20, right: 50, bottom: 30, left: 50}; // 
+      var margin = {top: 40, right: 90, bottom: 30, left: 50}; // 
 
       //Easy colors accessible via a 10-step ordinal scale
-      var colors = d3.scale.category10();
+      var colors = d3.scale.category20c();
+      
 
       // create a generic axis function
       var xAxis;  
       var yAxis;
       var yScale;
-      var xScale;   
+      var xScale;  
+      var title; 
 
       var padding = 0; 
 
@@ -484,21 +580,42 @@
         xAxis = thisStack.svg.append("g")
               .attr("class", "axis")
               .attr("transform", "translate(0," + (h - padding) + ")")
-              .call(xAxis);
-
+              .style()
+              .call(xAxis)
+              .append('text')
+              .attr('class', 'label')
+              .attr('dy', '.71em')
+              .attr('y', 20)
+              .attr('x', w / 2)
+              .style('text-anchor', 'middle')
+              .text("felony");
+              
         yAxis = thisStack.svg.append("g")
               .attr("class", "axis")
               .attr("transform", "translate(" + padding + ",0)")
-              .call(yAxis);
+              .call(yAxis)
+              .append("text")
+              .attr('class', 'label')
+              .attr('dy', '.71em') // TODO: figure out what's happening 
+              .attr("x", 5)
+              .attr("y", -15)
+              .style('text-anchor', 'middle')
+              .text("#victims");
+
+        threshold2 = d3.svg.legend().labelFormat("none").cellPadding(5).orientation("vertical").units("genders").cellWidth(25).cellHeight(18).inputScale(legendrange2).cellStepping(10);
+
+        thisStack.svg.append("g").attr("transform", "translate(250,10)").attr("class", "legend").call(threshold2);  
+
+         
 
 
-          // References: 
-          // Axis - http://alignedleft.com/tutorials/d3/axes 
-          // Stack bar - https://bl.ocks.org/mbostock/1134768
+        // References: 
+        // Axis - http://alignedleft.com/tutorials/d3/axes 
+        // Stack bar - https://bl.ocks.org/mbostock/1134768
       }
 
       thisStack.setup();
-      thisStack.update("all");
+      thisStack.update("Amazonas");
     }
   </script>
   

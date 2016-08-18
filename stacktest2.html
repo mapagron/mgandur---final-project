@@ -72,60 +72,79 @@
     <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
     <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
     <script>
+      // source for the stack: https://www.youtube.com/watch?v=n9kKdbzCiLI 
       
       var txData = [];
       var filteredData = [];
       var groupedData = [];
       var genders = ["feminine" ,"masculine"];
 
-      var margin = {top: 20, right: 50, bottom: 30, left: 50},
-              width = 600 - margin.left - margin.right,
-              height = 400 - margin.top - margin.bottom;
-       
-      var x = d3.scale.ordinal()
-              .rangeRoundBands([0, width], .35);
-       
-      var y = d3.scale.linear()
-              .rangeRound([height, 0]);
-       
-      var color = d3.scale.category20();
-       
-      var xAxis = d3.svg.axis()
-              .scale(x)
-              .orient("bottom");
+      //Width and height
+      var w = 500;
+      var h = 300;
+      var margin = {top: 20, right: 50, bottom: 30, left: 50};
+
+      //Easy colors accessible via a 10-step ordinal scale
+      var colors = d3.scale.category10();
+
+      var xAxis;
        
       var svg;
-
-
-      // Calling the data 
-      d3.csv('gender.csv', function (error, json) {
-        if (error) { throw error; }
-        data = json;
-        
-        setup();
-        update("all");
-      });
-
-        
+      
+      /*
 
       function setup() {
       
-        // SVG
-        svg = d3.select('#chart')
-          .append('svg')
-          .attr('width', width)
-          .attr('height', height);
-    
-        // SCALES
-        var x = d3.scale.ordinal()
-              .rangeRoundBands([0, width], .35);
        
-        var y = d3.scale.linear()
-              .rangeRound([height, 0]);
     
         // AXES
+        xAxis = d3.svg.axis()
+              .scale(x)
+              .orient("bottom");
+
         // EVENT HANDLERS
 
+
+        // Set the event handler for selecting a department
+        d3.select('#department').on('change', function () {
+
+          var department = d3.event.target.value;
+          update(department);
+        });
+      }
+      */
+      
+
+
+
+
+      // Calling the data 
+      //d3.csv('gender.csv', function (error, json) {
+        //if (error) { throw error; }
+        //data = json;
+      d3.csv('gender.csv',
+        function(d) {
+          return {
+            department: d.department,
+            felony: d.felony,
+            feminine: +d.feminine,
+            masculine: +d.masculine
+          };
+        }, 
+        function (error, json) {
+          if (error) { throw error; }
+          data = json;
+
+          setup();
+          update("all");
+      });
+
+      function setup( )
+      {
+        svg = d3.select("body")
+              .append("svg")
+              .attr('width', w + margin.left + margin.right)
+              .attr('height', h + margin.top + margin.bottom);
 
         // Set the event handler for selecting a department
         d3.select('#department').on('change', function () {
@@ -137,7 +156,7 @@
 
       function update(department) {
         // TRANSFORM
-        svg.selectAll( "*" ).remove( ); // adding this so the bars go away every time a filter is activate it. 
+        svg.selectAll( "*" ).remove( ); // adding this so the bars go away every time a filter is activate it.
         
         // Filter the data
         filteredData = data.slice();
@@ -158,55 +177,58 @@
             return {x: d.felony, y: d[c]};
           });
         });
-          
-        // TESTING - STACK 
-
-        //console.log( groupedData);
-        // the data is grouped correctly 
-
-        var barChart = d3.layout.stack()(groupedData);
-         
-        x.domain(barChart[0].map(function (d) {
-            return d.x;
-        }));
-
-        y.domain([0,
-            d3.max(barChart[barChart.length - 1],
-                    function (d) { return d.y0 + d.y;})
-            ])
-          .nice();
-         
-        var layer = svg.selectAll(".stack")
-                .data(barChart)
-                .enter().append("g")
-                .attr("class", "stack")
-                .style("fill", function (d, i) {
-                    return color(i);
-                });
-         
-        layer.selectAll("rect")
-                .data(function (d) {
-                    return d;
-                })
-                .enter().append("rect")
-                .attr("x", function (d) {
-                    return x(d.x);
-                })
-                .attr("y", function (d) {
-                    return y(d.y + d.y0);
-                })
-                .attr("height", function (d) {
-                    return y(d.y0) - y(d.y + d.y0);
-                })
-                .attr("width", x.rangeBand());
-         
-        svg.append("g")
-                .attr("class", "axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
         
-      }
+
+        //Set up stack method
+        var stack = d3.layout.stack();
+
+        //Data, stacked
+        stack(groupedData);
+
+
+        console.log( groupedData );
+
+        //Set up scales
+        var xScale = d3.scale.ordinal()
+          .domain(d3.range(groupedData[0].length))
+          .rangeRoundBands([0, w], 0.05);
       
+        var yScale = d3.scale.linear()
+          .domain([0,       
+            d3.max(groupedData, function(d) {
+              return d3.max(d, function(d) {
+                return d.y0 + d.y;
+              });
+            })
+          ])
+          .range([0, h]);
+          
+    
+        // Add a group for each row of data
+        var groups = svg.selectAll("g")
+          .data(groupedData)
+          .enter()
+          .append("g")
+          .style("fill", function(d, i) {
+            return colors(i);
+          });
+    
+        // Add a rect for each data value
+        var rects = groups.selectAll("rect")
+          .data(function(d) { return d; })
+          .enter()
+          .append("rect")
+          .attr("x", function(d, i) {
+            return xScale(i);
+          })
+          .attr("y", function(d) {
+            return ( h - yScale(d.y) ) - yScale(d.y0);
+          })
+          .attr("height", function(d) {
+            return yScale(d.y);
+          })
+          .attr("width", xScale.rangeBand());
+      }
     </script>
   </body>
 </html>
