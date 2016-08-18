@@ -5,35 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Colombia Colombia: Sexual Assault, Homicides, and Battery </title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed|Taviraj" rel="stylesheet">
+
   <style>
 
     .header {
-        background: linear-gradient(to bottom, #404040 0%, #262626 100%);
+        background: linear-gradient(to bottom, #114B5F 0%, #262626 100%);
         color: white;
-        text-align: left;
-        padding: 1em 0 2em;
+        text-align: right;
+        padding: 1em 0 3em;
+        height: 120px; 
+        font-family: 'Oswald', sans-serif;
       }
 
-    .description div {
-        background-color: #262626;
+
+    .auxcontainer {
+      background: #878C8F;
+      padding: 1em 0 2em;
+      height: 52px;
+      color: white; 
+
+    }
+
+
+    #description {
+        background-color: #114B5F;
         color: white;
         margin: 20px 0 20px 0;
         padding: 20px;
         float:left;
+        font-family: 'Taviraj', serif;
       }
+
+
+
+    
 
     .column
     {
-      border: 2px solid #262626;
+      
       /* display dictates the orientation of the element */
       display: inline-block;
       /* Set vertical-align to top in order to align columns to the top of the page */
       vertical-align: top;
-      width: 200px;
-      height: 500px;
+      width: 400px;
+      /* width (1), style (solid/groove/dash), color  */
+     
     }
 
-    .chart div {
+    .totals div {
       font: 10px sans-serif;
       background-color: #2b3121;
       text-align: center;
@@ -43,121 +63,562 @@
       float:bottom;
     }
 
+    circle {
+      cursor: pointer; 
+    }
+
+    #department {
+      display: block;
+    }
+
+    .label {
+      font-weight: 700;
+    }
+
+    .titlelabel {
+      font-weight: 700;
+    }
+
+    #bubble-chart-wrapper {
+      display: inline-block;
+      border-left-width: 1px;
+      border-left-style: dashed ;
+      border-left-color: #262626;
+
+    }
+
+    #comparison-chart-wrapper {
+      display: none;
+    }
+
+    #reset {
+      display: none;
+    }
+
+    #compare {
+      display: none;
+    } 
+
+    text {
+      fill: #373D3F;
+      word-spacing: 0.5px;
+      font-family: 'Taviraj', serif;
+      font-size: 12px;
+    }
+
+    button {
+      border-radius: 5px !important;
+    }
+
+    #bubble-legend g:nth-child(1) rect {
+      fill: #ED474A !important;
+    }
+
+    #bubble-legend g:nth-child(2) rect {
+      fill: #AF5D63 !important;
+    }
+
+    #bubble-legend g:nth-child(3) rect {
+      fill: #846075 !important;
+    }
+
+    #bubble-legend g:nth-child(4) rect {
+      fill: #4A6C6F !important;
+    }
+
   </style>
+
+
+
+  <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
+  <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
+  <script type="text/javascript" src="legend.js"></script>
+
+  <script type="text/javascript" src="https://npmcdn.com/science@1.9.3/science.v1.min.js"></script>
+  <script type="text/javascript" src="https://npmcdn.com/simple-statistics@2.0.0/dist/simple-statistics.min.js"></script>
 
 </head>
 
 <body>
 
   <div class="header section">
-    <div class="container">
-      <h1>Colombia: Sexual Assault, Homicides, and Battery </h1>
-      <p>Potential consequences of +60 years of internal conflict: 2010 - 2015 </p>
+    <div class="header">
+      <h1>Colombia, 60 years of conflict and its impact on social structure (2000 - 2015)</h1>
+      <p>Assault, Battery and Homicides</p>
     </div>
   </div>
+
+  <div class= "auxcontainer">
+    
+    <p id="espPar">Today Colombia has at least two recognized guerrilla groups (FARC and ELN) and at least 7 million deaths as a result of the conflict (six times Washington D.C population). Another consequence of the ongoing conflict is the negative impact on the social and economic structures as areas where the conflict is more intense have more risk having more felonies such as: homicides, sexual assaults, and battery.  </p>
+
+    <div class="btn-toolbar">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" id="compare">Compare</button>
+          <button type="button" class="btn btn-default" id="reset">Reset</button>
+        </div>
+    </div>
+  </div>
+
   
-  <div class="chart">
+
+  <div id="info" class="column"> <!-- sintax = attribute = value -->
+    <div id="department-title">
+    </div>
+    <div id="department-svg-wrapper">
+
+    </div>
+
+    <div id="description">
+      The graphical representations below are design by departaments. Colombia has 32 departments which can be categorized by The Index of Conflict which runs between 1 to 4. Where 1 is highly intense conflict with a permanent presence of a guerrilla group 365 days out of the year and 4 is barely any extended presence of a guerrilla group, and as a result, infrequent or low instances of conflict. 
+    </div>
+
+  </div>
+
+  <div id="bubble-chart-wrapper">
+
+  </div>
+
+  <div id="comparison-chart-wrapper">
+    <label for="Department">Department </label>
+    <select id="department">
+      <option value="all">All</option>
+      <option value="Amazonas">Amazonas</option>
+      <option value="Antioquia">Antioquia</option>
+      <option value="Arauca">Arauca</option>
+      <option value="Atlantico">Atlantico</option>
+      <option value="Bolivar">Bolivar</option>
+      <option value="Boyaca">Boyacá</option>
+      <option value="Caldas">Caldas</option>
+      <option value="Caqueta">Caqueta</option>
+      <option value="Casanare">Casanare</option>
+      <option value="Cauca">Cauca</option>
+      <option value="Cesar">Cesar</option>
+      <option value="Choco">Choco</option>
+      <option value="Cordoba">Cordoba</option>
+      <option value="Cundinamarca">Cundinamarca</option>
+      <option value="Guainia">Guainia</option>
+      <option value="Guaviare">Guaviare</option>
+      <option value="Huila">Huila</option>
+      <option value="Magdalena">Magdalena</option>
+      <option value="Meta">Meta</option>
+      <option value="Narino">Narino</option>
+      <option value="Norte de Santander">Norte de Santander</option>
+      <option value="Putumayo">Putumayo</option>
+      <option value="Quindio">Quindio</option>
+      <option value="Risaralda">Risaralda</option>
+      <option value="San Andres">San Andres</option>
+      <option value="Santander">Santander</option>
+      <option value="Sucre">Sucre</option>
+      <option value="Tolima">Tolima</option>
+      <option value="Valle">Valle</option>
+      <option value="Vaupes">Vaupes</option>
+      <option value="Vichada">Vichada</option>
+    </select>
+  </div>
+
+
+
+
+  <div class="totals">
     <div style="width: 454px;">Assault and battery 117964 victims</div>
     <div style="width: 349px;">Homicide - 86942 victims</div>
     <div style="width: 286px;">Sexual Assaults - 71978 victims</div>
   </div>
-
-  <div id="info1" class="column"> <!-- sintax = attribute = value -->
-    The dataset includes more than 200,000 records of victims of homicides, sexual assaults, and battery during the period of 2010-2015. A row includes the date, the type and location of the felony, the gender, education level, and the age of the victim.
-  </div>
-
-  <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
-  <script type="text/javascript" src="https://npmcdn.com/science@1.9.3/science.v1.min.js"></script>
-  <script type="text/javascript" src="https://npmcdn.com/simple-statistics@2.0.0/dist/simple-statistics.min.js"></script>
+  
   <script>
 
-    // info is a parameter that is expected between the parenthesis when you call the function
-    function setInfo( info ) {
+    var bubbleData;
+    var bubble;
 
-      // document is a predefined object that represents the page
-      // its going to return an array of elements (SSSSS plural)
-      // [0] = 1st index in our array - elements that have the class column ergo they are columns -- follow styles declare at the top
-      //var infoColumn = document.getElementsByClassName( "column" )[ 0 ]; // this just points to the element column
-
-      var infoColumn = document.getElementById( "info1" ); //this returns a single element 
-
-      // The innerHTML property represents the text/html within an element
-      infoColumn.innerHTML = info;
-
-      // This function doesn't need to return anything
-    }
+    var stackData;
+    var departmentStack;
+    var comparisonStack; 
+    var conflictIndexColors = ["#FFF" , "#ED474A", "#AF5D63", "#846075", "#4A6C6F" ];
+       
 
 
-    // Creating a Basic Bubble Chart 
-    // Source // https://bl.ocks.org/mbostock/4063269 
-    // Source // http://jrue.github.io/coding/
-    // documentation: https://github.com/d3/d3-3.x-api-reference/blob/master/Pack-Layout.md 
-    // TODO: How to categorize the bubbles as complex as this code 
-    // JUL 26: ASK THEM -- DATA how can I create the nodes in data.json without do it manually? ; 
-    // JUL 26: text align left is not working -- check 
-    // JUL 26: background color - check for a good scheme of colors -- nothing looks nice. 
-    // JUL 26: check out how to add color schemes 
-    // JUL 26: the +info function works if we click on the circle - figure out how to higlight the circle once is clicked. - tooltip - transitions? 
-
-    var width = 800;
-    var height = 600;
-    //var c20c = d3.scale.category20c(); pending to make it work 
+    //legends data
+     
+    bubbleLegendValues = ["Index 1: Intense Violence (800,000 - 180,000)", "Index 2: High-Violence (179.000 - 125.000)", "Index 3: Mid-violence (124.999 - 50.000) ", "Index 4: Low-Violece (49,000 or less)"];
       
-    var svg = d3.select("body").append("svg")
-          .attr("width", width)
-          .attr("height" , height)
-          .append("g")
-            .attr("transform" , "translate (50, 50)"); 
+    legendrange = d3.scale.category20().domain(bubbleLegendValues);
+    console.log( legendrange );
+    //legendrange = (["blue", "red", "black", "orange"]).domain(bubbleLegendValues);
 
-    var pack = d3.layout.pack()
-          .size([width, height - 50])
-          .padding(10); 
+    stackLegendValues = ["masculine", "feminine"];
+    legendrange2 = d3.scale.category20().domain(stackLegendValues);
 
-    d3.json('data.json', function (error, json) {
+    d3.json('data2.json', function (error, json) {
       if (error) { throw error; }
-      data = json;
+      bubbleData = json;
 
-      var nodes = pack.nodes(data); 
-
-      var node = svg.selectAll(".node")
-        .data(nodes)
-        .enter()
-        .append("g")  
-          .attr("class", "node")
-          .attr("transform", function (d) { return "translate(" +d.x + "," + d.y + ")"; }); // this is not about the function is about the html position
-
-      var description = "test";
-      node.append("circle")
-        .attr("r", function (d) { return d.r; }) 
-        .attr("fill", function (d) { return d.children ? "#fff" : "c20c"; })
-        .attr("opacity", 0.15)
-        .attr("stroke", function (d) { return d.children ? "#fff" : "ADADAD"; })
-        .attr("stroke-width", "2")
-        .attr( "onclick", function (d) { return "setInfo( '" + d.info + "' );" } )
-        //.on('mouseover', tip.show)
-        //.on('mouseout', tip.hide);
-
-      node.append ("text")
-        //.attr("r", 0) Place the data starting at the point 0,0 of the circle - does not look so good
-        .attr("text-anchor", "middle")
-        .text(function (d) { return d.children ? "" : d.department; }) // Ternary operator
-        .attr("color", "blue")
-        
-        
+      bubble = new Bubble( );
 
     });
 
-    // if d.children is defined
-    /*
-    if( d.children != undefined )
-    {
-      return d.department;
+    // Calling the data 
+    d3.csv('gender.csv',
+      function(d) {
+        return {
+          department: d.department,
+          felony: d.felony,
+          feminine: +d.feminine,
+          masculine: +d.masculine
+        };
+      }, 
+      function (error, json) {
+        if (error) { throw error; }
+        stackData = json;
+
+        comparisonStack = new Stack("#comparison-chart-wrapper");
+        departmentStack = new Stack("#department-svg-wrapper"); 
+    });
+
+    d3.select('#department').on('change', function () {
+
+      var department = d3.event.target.value;
+      comparisonStack.update(department);
+      
+    });
+
+    d3.select("#compare")
+      .on("click", function (d) {
+
+      
+      d3.select( "#bubble-chart-wrapper" )
+        .style("display" , "none");
+
+      d3.select( "#comparison-chart-wrapper" )
+        .style("display" , "inline-block");
+
+
+      d3.select("#reset")
+        .style("display", "inline-block");
+
+      d3.select("#compare")
+      .style("display", "none"); 
+    });
+
+
+    d3.select("#reset")
+      .on("click", function (d) {
+
+    d3.select( "#comparison-chart-wrapper" )
+        .style("display" , "none");
+    
+    d3.select( "#bubble-chart-wrapper" )
+        .style("display" , "inline-block");
+
+      d3.select("#compare")
+        .style("display", "inline-block"); 
+
+      d3.select("#reset")
+        .style("display", "none"); 
+    });
+
+
+    function Bubble () {
+
+      var thisBubble = this;
+
+      var width =  600;
+      var height = 600;
+              
+      var svg = d3.select("#bubble-chart-wrapper").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr( "transform", "translate(600,0)rotate( 90 )" );
+
+      var pack = d3.layout.pack()
+            .size([width, height])
+            .padding(10); 
+
+      var tooltip = d3.tip()
+        .attr('class', 'tooltip')
+        .offset([-6, 0])
+        .html(function(d) {
+
+          
+
+          if( d.index == 4 ){
+            return d.department; // no using "" because we need the variable 
+          }
+          else {
+            return null;
+          }
+            
+             
+         });
+
+      tooltip(svg);
+
+
+      Bubble.prototype.setup = function( )
+      {
+        var nodes = pack.nodes(bubbleData); 
+
+        var node = svg.selectAll(".node")
+          .data(nodes)
+          .enter()
+          .append("g")  
+            .attr("class", "node")
+            .attr("transform", function (d) { return "translate(" +d.x + "," + d.y + ") rotate( -90 )"; }); // this is not about the function is about the html position
+
+        node.append("circle")
+          .attr("r", function (d) { return d.r; }) 
+          .attr("fill", function (d) { 
+            if( d.children )
+            {
+              return "#FFFFFF";
+            }
+            else
+            {
+              return conflictIndexColors[ d.index ];
+            }
+          })
+          .attr("opacity", 1.0)
+          .attr("stroke", function (d) { return d.children ? "#fff" : "#D3D3D3"; })
+          .attr("stroke-width", "2")
+          .attr( "onclick", function (d) { return "bubble.setInfo( '" + d.department + "', '" + d.info + "', "+ d.index +" );" } )
+          .on( 'mouseover', tooltip.show )
+          .on( 'mouseout', tooltip.hide );
+
+        node.append ("text")
+          //.attr("r", 0) Place the data starting at the point 0,0 of the circle - does not look so good
+          .attr("text-anchor", "middle")
+          // if has chidlren OR index iqual to 4 return empty otherwise return d.department 
+          .text(function (d) { return (d.children || d.index ==4) ? "" : d.department; }) // Ternary operator
+          .attr("color", "blue")
+          .attr( "onclick", function (d) { return "bubble.setInfo( '" + d.department + "', '" + d.info + "', "+ d.index +" );" } );
+
+        // to create the legend using function legend.js 
+        threshold = d3.svg.legend().labelFormat("none").cellPadding(5).orientation("vertical").units("Index of Conflict - By Victims").cellWidth(25).cellHeight(18).inputScale(legendrange).cellStepping(10);
+
+        svg.append("g")
+              .attr("id", "bubble-legend")
+              .attr("transform", "translate(500,580) rotate(-90)")
+              .attr("class", "legend")
+              .call(threshold); 
+
+      }
+
+      // info is a parameter that is expected between the parenthesis when you call the function
+      thisBubble.setInfo = function( department, info, index ) {
+
+        // document is a predefined object that represents the page
+        // its going to return an array of elements (SSSSS plural)
+        // [0] = 1st index in our array - elements that have the class column ergo they are columns -- follow styles declare at the top
+        //var infoColumn = document.getElementsByClassName( "column" )[ 0 ]; // this just points to the element column
+
+        var description = d3.select( "#description" )[ 0 ][ 0 ]; //this returns a single element 
+
+        d3.select("[value='" + department + "']") 
+          .attr ("disabled", "disabled");
+
+        d3.select("#compare")
+          .style ("display", "inline-block"); 
+
+        d3.select( "#department-title" )
+          .html(department + " ( Index of Conflict - " + index + ")" )
+          .style("color", conflictIndexColors[ index ] )
+          .style("text-align", "center")
+          .style("font-family", "'Oswald', sans-serif" )
+          .style("font-size", "20px");
+
+        d3.select("#espPar")
+          .style ("display", "none"); 
+
+
+        // The innerHTML property represents the text/html within an element
+        description.innerHTML = info;
+
+        departmentStack.update( department );
+
+
+
+        // This function doesn't need to return anything
+      }
+
+      thisBubble.setup( );
     }
-    else
-    {
-      return d.department;
+
+
+    function Stack (targetSelector) {
+      var thisStack = this;
+      // source for the stack: https://www.youtube.com/watch?v=n9kKdbzCiLI 
+      
+      thisStack.txData = [];
+      thisStack.filteredData = [];
+      thisStack.groupedData = [];
+      thisStack.genders = ["feminine" ,"masculine"];
+
+      //Width and height
+      var w = 250;
+      var h = 300;
+      var margin = {top: 40, right: 90, bottom: 30, left: 50}; // 
+
+      //Easy colors accessible via a 10-step ordinal scale
+      var colors = d3.scale.category20c();
+      
+
+      // create a generic axis function
+      var xAxis;  
+      var yAxis;
+      var yScale;
+      var xScale;  
+      var title; 
+
+      var padding = 0; 
+
+      thisStack.svg = d3.select(targetSelector)
+                      .append("svg")
+                      .attr('width', w + margin.left + margin.right)
+                      .attr('height', h + margin.top + margin.bottom)
+                      .append('g')
+                      .attr("id", targetSelector + "-svg")
+                      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+      
+      
+
+
+      // update is a member of stack
+      thisStack.setup = function (){
+
+      }
+
+      // update is a member of stack
+      thisStack.update = function (department) {
+
+        // TRANSFORM
+        thisStack.svg.selectAll( "*" ).remove( ); // adding this so the bars go away every time a filter is activate it.
+        console.log( thisStack.svg[ 0 ][ 0 ].getAttribute( "id" ) );
+
+        // Filter the data
+        thisStack.filteredData = stackData.slice();
+
+        if( department !== "all" )
+        {
+          //console.log(filteredData);
+          
+          // Get the data for one department
+          thisStack.filteredData = thisStack.filteredData.filter( function (data) {
+            return ( data.department == department );
+          });
+        }
+
+        // Group the data by felonies and gender
+        thisStack.groupedData = thisStack.genders.map(function (c) {
+          return thisStack.filteredData.map(function (d) {
+            return {x: d.felony, y: d[c]};
+          });
+        });
+        
+
+        //Set up stack method
+        var stack = d3.layout.stack();
+
+        //Data, stacked
+        stack(thisStack.groupedData);
+
+
+        //console.log( thisStack.groupedData );
+
+        //Set up scales
+        xScale = d3.scale.ordinal()
+          .domain(d3.range(thisStack.groupedData[0].length))
+          .rangeRoundBands([0, w], 0.05);
+      
+        yScale = d3.scale.linear()
+          .domain([0,       
+            d3.max(thisStack.groupedData, function(d) {
+              return d3.max(d, function(d) {
+                return d.y0 + d.y;
+              });
+            })
+          ])
+          .range([h,0]);
+
+        //console.log( thisStack.groupedData );
+
+        // Axis - 
+        xAxis = d3.svg.axis() 
+                .scale(xScale)
+                .tickFormat( function( index ){ return thisStack.groupedData[0][index].x; } ) // to pass the labels din - from d.felony 
+                .orient("bottom");
+
+        yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left")
+                .ticks(5);
+    
+        // Add a group for each row of data
+        var groups = thisStack.svg.selectAll("g")
+          .data(thisStack.groupedData)
+          .enter()
+          .append("g")
+          .style("fill", function(d, i) {
+            return colors(i);
+          });
+    
+        // Add a rect for each data value
+        var rects = groups.selectAll("rect")
+          .data(function(d) { return d; })
+          .enter()
+          .append("rect")
+          .attr("x", function(d, i) {
+            return xScale(i);
+          })
+          .attr("y", function(d) {
+            return yScale(d.y + d.y0);
+          })
+          .attr("height", function(d) {
+            return yScale(d.y0) - yScale(d.y + d.y0);
+          })
+          .attr("width", xScale.rangeBand());
+
+        // adding Axis. 
+        xAxis = thisStack.svg.append("g")
+              .attr("class", "axis")
+              .attr("transform", "translate(0," + (h - padding) + ")")
+              .style()
+              .call(xAxis)
+              .append('text')
+              .attr('class', 'label')
+              .attr('dy', '.71em')
+              .attr('y', 20)
+              .attr('x', w / 2)
+              .style('text-anchor', 'middle')
+              .text("felony");
+              
+        yAxis = thisStack.svg.append("g")
+              .attr("class", "axis")
+              .attr("transform", "translate(" + padding + ",0)")
+              .call(yAxis)
+              .append("text")
+              .attr('class', 'label')
+              .attr('dy', '.71em') // TODO: figure out what's happening 
+              .attr("x", 5)
+              .attr("y", -15)
+              .style('text-anchor', 'middle')
+              .text("#victims");
+
+        threshold2 = d3.svg.legend().labelFormat("none").cellPadding(5).orientation("vertical").units("gender").cellWidth(25).cellHeight(18).inputScale(legendrange2).cellStepping(10);
+
+        thisStack.svg.append("g").attr("transform", "translate(250,10)").attr("class", "legend").call(threshold2);  
+
+         
+
+
+        // References: 
+        // Axis - http://alignedleft.com/tutorials/d3/axes 
+        // Stack bar - https://bl.ocks.org/mbostock/1134768
+      }
+
+      thisStack.setup();
+      thisStack.update("Amazonas");
     }
-    */
   </script>
   
 </body>

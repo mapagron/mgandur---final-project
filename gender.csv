@@ -1,0 +1,97 @@
+department,felony,feminine,masculine
+Amazonas,assault,132,194
+Antioquia,assault,1940,2601
+Arauca,assault,705,984
+Atlantico,assault,4572,5605
+Bolivar,assault,2015,2813
+Boyaca,assault,1190,1767
+Caldas,assault,372,561
+Caqueta,assault,837,1205
+Casanare,assault,344,552
+Cauca,assault,532,822
+Cesar,assault,947,1430
+Choco,assault,402,645
+Cordoba,assault,974,1249
+Cundinamarca,assault,7220,7274
+Guainia,assault,19,29
+Guajira,assault,1322,1781
+Guaviare,assault,83,115
+Huila,assault,3918,4765
+Magdalena,assault,1143,1695
+Meta,assault,2375,3193
+Narino,assault,4329,4533
+Norte de Santander,assault,2057,2815
+Putumayo,assault,799,945
+Quindio,assault,294,358
+Risaralda,assault,334,513
+San Andres,assault,62,57
+Santander,assault,3385,4957
+Sucre,assault,1200,1755
+Tolima,assault,842,1123
+Valle,assault,6993,8633
+Vaupes,assault,6,19
+Vichada,assault,76,122
+Amazonas,homicide,3,66
+Antioquia,homicide,1194,13922
+Arauca,homicide,67,710
+Atlantico,homicide,222,2998
+Bolivar,homicide,161,2141
+Boyaca,homicide,94,597
+Caldas,homicide,152,1662
+Caqueta,homicide,127,1347
+Casanare,homicide,56,411
+Cauca,homicide,280,3113
+Cesar,homicide,136,1231
+Choco,homicide,79,946
+Cordoba,homicide,205,2190
+Cundinamarca,homicide,1012,9709
+Guainia,homicide,2,9
+Guajira,homicide,78,1142
+Guaviare,homicide,26,258
+Huila,homicide,163,1563
+Magdalena,homicide,129,1633
+Meta,homicide,219,1885
+Narino,homicide,316,3061
+Norte de Santander,homicide,231,2731
+Putumayo,homicide,119,971
+Quindio,homicide,126,1299
+Risaralda,homicide,172,2082
+San Andres,homicide,11,109
+Santander,homicide,191,1743
+Sucre,homicide,72,766
+Tolima,homicide,175,1927
+Valle,homicide,1343,17411
+Vaupes,homicide,1,12
+Vichada,homicide,13,106
+Amazonas,sexual assault,319,55
+Antioquia,sexual assault,4326,703
+Arauca,sexual assault,540,74
+Atlantico,sexual assault,2936,512
+Bolivar,sexual assault,1962,314
+Boyaca,sexual assault,2484,353
+Caldas,sexual assault,1335,273
+Caqueta,sexual assault,1209,182
+Casanare,sexual assault,502,63
+Cauca,sexual assault,1185,151
+Cesar,sexual assault,944,149
+Choco,sexual assault,728,73
+Cordoba,sexual assault,1478,172
+Cundinamarca,sexual assault,8410,1344
+Guainia,sexual assault,46,6
+Guajira,sexual assault,987,155
+Guaviare,sexual assault,175,33
+Huila,sexual assault,3302,549
+Magdalena,sexual assault,1485,194
+Meta,sexual assault,2318,375
+Narino,sexual assault,1593,211
+Norte de Santander,sexual assault,1755,377
+Putumayo,sexual assault,561,70
+Quindio,sexual assault,1022,223
+Risaralda,sexual assault,2077,372
+San Andres,sexual assault,88,19
+Santander,sexual assault,6162,1074
+Sucre,sexual assault,1744,328
+Tolima,sexual assault,1671,289
+Valle,sexual assault,7741,1385
+Vaupes,sexual assault,16,2
+Vichada,sexual assault,69,22

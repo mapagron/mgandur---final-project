@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TEST: Stackbar </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <style>
+  .axis path, .axis line {
+    fill: none;
+    stroke: grey;
+    shape-rendering: crispEdges;
+  }
+
+  .axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+  }
+
+  .label {
+    font-weight: 700;
+  }
+
+
+  </style>
+</head>
+<body>
+    <div class="header section">
+      <div class="container">
+        <h1>Colombia</h1>
+        <p> (2000 - 2016)</p>
+      </div>
+    </div>
+    <div class= "description problem">
+        <div class="description">
+          <p> August 07 - 1. check the scale (something is wrong with it) </p>
+          <hr>
+          <p> </p>
+        </div>
+    </div>
+    <div class="controls section">
+      <div class="container">
+        <div class="btn-toolbar">
+          <label for="Department">Department </label>
+          <select id="department">
+            <option value="all">All</option>
+            <option value="Amazonas">Amazonas</option>
+            <option value="Antioquia">Antioquia</option>
+            <option value="Arauca">Arauca</option>
+            <option value="Atlantico">Atlantico</option>
+            <option value="Bolivar">Bolivar</option>
+            <option value="Boyaca">Boyacá</option>
+            <option value="Caldas">Caldas</option>
+            <option value="Caqueta">Caqueta</option>
+            <option value="Casanare">Casanare</option>
+            <option value="Cauca">Cauca</option>
+            <option value="Cesar">Cesar</option>
+            <option value="Choco">Choco</option>
+            <option value="Cordoba">Cordoba</option>
+            <option value="Cundinamarca">Cundinamarca</option>
+            <option value="Guainia">Guainia</option>
+            <option value="Guaviare">Guaviare</option>
+            <option value="Huila">Huila</option>
+            <option value="Magdalena">Magdalena</option>
+            <option value="Meta">Meta</option>
+            <option value="Nariño">Nariño</option>
+            <option value="Norte de Santander">Norte de Santander</option>
+            <option value="Putumayo">Putumayo</option>
+            <option value="Quindio">Quindio</option>
+            <option value="Risaralda">Risaralda</option>
+            <option value="San Andres">San Andres</option>
+            <option value="Santander">Santander</option>
+            <option value="Sucre">Sucre</option>
+            <option value="Tolima">Tolima</option>
+            <option value="Valle">Valle</option>
+            <option value="Vaupes">Vaupes</option>
+            <option value="Vichada">Vichada</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="main section">
+      <div class="container">
+        <div id="chart"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
+    <script type="text/javascript" src="https://npmcdn.com/d3-tip@0.6.7/index.js"></script>
+    <script>
+       
+      function stack () {
+
+        // source for the stack: https://www.youtube.com/watch?v=n9kKdbzCiLI 
+        
+        var txData = [];
+        var filteredData = [];
+        var groupedData = [];
+        var genders = ["feminine" ,"masculine"];
+
+        //Width and height
+        var w = 600;
+        var h = 400;
+        var margin = {top: 20, right: 50, bottom: 30, left: 50}; // 
+
+        //Easy colors accessible via a 10-step ordinal scale
+        var colors = d3.scale.category10();
+
+        // create a generic axis function
+        var xAxis; 
+        var yAxis;
+        var yScale;
+        var xScale;   
+
+        var svg;
+
+        var padding = 0; 
+
+
+        
+        // Calling the data 
+        d3.csv('gender.csv',
+          function(d) {
+            return {
+              department: d.department,
+              felony: d.felony,
+              feminine: +d.feminine,
+              masculine: +d.masculine
+            };
+          }, 
+          function (error, json) {
+            if (error) { throw error; }
+            data = json;
+
+            setup();
+            update("all");
+        });
+
+        function setup( )
+        {
+          svg = d3.select("body")
+                .append("svg")
+                .attr('width', w + margin.left + margin.right)
+                .attr('height', h + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+                     
+          // Set the event handler for selecting a department
+          d3.select('#department').on('change', function () {
+
+            var department = d3.event.target.value;
+            update(department);
+          });
+        }
+
+        function update(department) {
+          // TRANSFORM
+          svg.selectAll( "*" ).remove( ); // adding this so the bars go away every time a filter is activate it.
+          
+          // Filter the data
+          filteredData = data.slice();
+
+          if( department !== "all" )
+          {
+            //console.log(filteredData);
+            
+            // Get the data for one department
+            filteredData = filteredData.filter( function (data) {
+              return ( data.department == department );
+            });
+          }
+
+          // Group the data by felonies and gender
+          groupedData = genders.map(function (c) {
+            return filteredData.map(function (d) {
+              return {x: d.felony, y: d[c]};
+            });
+          });
+          
+
+          //Set up stack method
+          var stack = d3.layout.stack();
+
+          //Data, stacked
+          stack(groupedData);
+
+
+          //console.log( groupedData );
+
+          //Set up scales
+          xScale = d3.scale.ordinal()
+            .domain(d3.range(groupedData[0].length))
+            .rangeRoundBands([0, w], 0.05);
+        
+          yScale = d3.scale.linear()
+            .domain([0,       
+              d3.max(groupedData, function(d) {
+                return d3.max(d, function(d) {
+                  return d.y0 + d.y;
+                });
+              })
+            ])
+            .range([h,0]);
+
+          //console.log( groupedData );
+
+          // Axis - 
+          xAxis = d3.svg.axis() 
+                  .scale(xScale)
+                  .tickFormat( function( index ){ return groupedData[0][index].x; } ) // to pass the labels din - from d.felony 
+                  .orient("bottom");
+
+          yAxis = d3.svg.axis()
+                  .scale(yScale)
+                  .orient("left")
+                  .ticks(5);
+      
+          // Add a group for each row of data
+          var groups = svg.selectAll("g")
+            .data(groupedData)
+            .enter()
+            .append("g")
+            .style("fill", function(d, i) {
+              return colors(i);
+            });
+      
+          // Add a rect for each data value
+          var rects = groups.selectAll("rect")
+            .data(function(d) { return d; })
+            .enter()
+            .append("rect")
+            .attr("x", function(d, i) {
+              return xScale(i);
+            })
+            .attr("y", function(d) {
+              return yScale(d.y + d.y0);
+            })
+            .attr("height", function(d) {
+              return yScale(d.y0) - yScale(d.y + d.y0);
+            })
+            .attr("width", xScale.rangeBand());
+
+          // adding Axis. 
+          xAxis = svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (h - padding) + ")")
+                .call(xAxis);
+
+          yAxis = svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + padding + ",0)")
+                .call(yAxis);
+
+
+            // References: 
+            // Axis - http://alignedleft.com/tutorials/d3/axes 
+            // Stack bar - https://bl.ocks.org/mbostock/1134768
+        }
+
+      }
+
+      stack (); 
+
+    </script>
+  </body>
+</html>

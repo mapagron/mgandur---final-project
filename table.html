@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- STEP 1: 
+  Tittle and general styling (bootstrap, -->
+  <!-- BOOTSTRAP - Bootstrap is a free front-end framework for faster and easier web development
+  Bootstrap includes HTML and CSS based design templates for typography, forms, buttons, tables, navigation, modals, image carousels and many other, as well as optional JavaScript plugins. Bootstrap also gives you the ability to easily create responsive designs-->
+ 
+  <!-- Padding: properties are used to generate space around content.The padding properties set the size of the white 
+    space between the element content and the element border. http://www.w3schools.com/css/css_padding.asp 
+    An "em" is equal to the height of a line of text. */ -->
+
+  <!--/* Padding: properties are used to generate space around content.The padding properties set the size of the white 
+    space between the element content and the element border. http://www.w3schools.com/css/css_padding.asp */
+    /* An "em" is equal to the height of a line of text. */
+
+  <!--/* linear-gradient always has to have at least two colors http://www.w3schools.com/css/css3_gradients.asp */ -->
+
+  <title>Week 2: Armed Conflict in Colombia by Departments</title><!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <style>
+      .section { padding: 1em 0; }
+    /* An "em" is equal to the height of a line of text. */
+    .header {
+      background: linear-gradient(to bottom, #337ab7 0%, #135a97 100%);
+      color: white;
+      padding: 1em 0 2em;
+    }
+    #data-table td {
+      width: 25%;
+      /* The table has four columns, so this rule makes them of equal width. */
+    }
+    .bar {
+      height: 20px;
+      /* Note that we'll set the width dynamically using Javascript. */
+      background: #337ab7;
+    }
+ .auxparagraph {
+      text-align: right;                 
+      font-size: 10px;
+      font-style: oblique;
+      color: #333;
+    }
+  </style>
+</head>
+
+<!-- STEP 2: 
+  Body and the DOM  -->
+
+<body>
+<div class="header section">
+  <div class="container">
+    <h1>Week 2: Armed Conflict in Colombia by Departments</h1>
+    <p>Colombia has been facing guerrilla-related conflicts for over six decades. The conflict, just in the last decade, has left more than  3 million victims.</p>
+  </div>
+</div>
+<div class="controls section">
+  <div class="container">
+    <div class="btn-toolbar">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" id="sort-asc">Ascending</button>
+        <button type="button" class="btn btn-default" id="sort-desc">Descending</button>
+      </div>
+      <div class="btn-group">
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main section">
+  <div class="container">
+    <table class="table" id="data-table">
+      <thead>
+        <tr>
+          <th>Department</th>
+          <th>Index of Conflict</th>
+          <th>Victims</th>
+          <th>Chart</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    
+  </div>
+</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+<script>
+  var conflict = [
+  [{"department ":"Amazonas","victimtotal":776,"vicon":1275,"index":4},
+  {"department ":"Antioquia","victimtotal":24942,"vicon":840769,"index":1},
+  {"department ":"Arauca","victimtotal":3089,"vicon":34466,"index":3},
+  {"department ":"Atlantico","victimtotal":17040,"vicon":79471,"index":2},
+  {"department ":"Bolivas","victimtotal":9646,"vicon":223142,"index":1},
+  {"department ":"Boyaca","victimtotal":6506,"vicon":15203,"index":3},
+  {"department ":"Caldas","victimtotal":4389,"vicon":59388,"index":3},
+  {"department ":"Caqueta","victimtotal":4915,"vicon":87611,"index":2},
+  {"department ":"Casanare","victimtotal":1947,"vicon":32793,"index":3},
+  {"department ":"Cauca","victimtotal":6123,"vicon":171793,"index":1},
+  {"department ":"Cesar","victimtotal":4860,"vicon":187518,"index":1},
+  {"department ":"Choco","victimtotal":2882,"vicon":120576,"index":2},
+  {"department ":"Cordoba","victimtotal":6326,"vicon":175136,"index":1},
+  {"department ":"Cundinamarca","victimtotal":35301,"vicon":68423,"index":2},
+  {"department ":"Guainia","victimtotal":111,"vicon":3510,"index":4},
+  {"department ":"Guajira","victimtotal":5499,"vicon":65945,"index":2},
+  {"department ":"Guaviare","victimtotal":698,"vicon":13949,"index":3},
+  {"department ":"Huila","victimtotal":14270,"vicon":78468,"index":2},
+  {"department ":"Magdalena","victimtotal":6314,"vicon":184079,"index":1},
+  {"department ":"Meta","victimtotal":10433,"vicon":90455,"index":2},
+  {"department ":"Narino","victimtotal":14129,"vicon":204757,"index":1},
+  {"department ":"Norte de Santander","victimtotal":9994,"vicon":109562,"index":2},
+  {"department ":"Putumayo","victimtotal":3494,"vicon":54050,"index":3},
+  {"department ":"Quindio","victimtotal":3334,"vicon":27219,"index":3},
+  {"department ":"Risaralda","victimtotal":5625,"vicon":50570,"index":3},
+  {"department ":"San Andres","victimtotal":347,"vicon":193,"index":4},
+  {"department ":"Santander","victimtotal":17637,"vicon":82932,"index":2},
+  {"department ":"Sucre","victimtotal":5875,"vicon":138311,"index":2},
+  {"department ":"Tolima","victimtotal":6177,"vicon":75957,"index":2},
+  {"department ":"Valle","victimtotal":43733,"vicon":262121,"index":1},
+  {"department ":"Vaupes","victimtotal":57,"vicon":4296,"index":4},
+  {"department ":"Vichada","victimtotal":415,"vicon":2262,"index":4}]
+    
+
+     // The ALL_CAPS treatment here is signalling that this variable is a constant - it should never change.
+  var MAX_VICTIMS = 840769;
+  // This is where we'll store the data representing user interaction; event handlers (the functions that
+  // are called when a user clicks a button) work by updating the properties of this object. An alternative
+  // approach, where each event handler directly updates the table, would quickly become messy. Imagine,
+  // for example, that I've filtered the table to just show elementary schools. Next, I sort the table to
+  // be in descending order. Finally, I unfilter the table to show all schools. If I'm not careful, the
+  // newly revealed schools will not be sorted, because the filter operation doesn't know how to sort.
+  // Instead, updateTable() will sort, filter, and paginate based on whatever the options object contains,
+  // always starting from a fresh copy of the data, and we can count on the result to be consistent
+  // given the same values in options.
+  var options = {
+    sorted: false,
+    filtered: false,
+    page: 0
+  };
+  function updateTable() {
+    // Make a copy of the data
+    var data = conflict.slice();
+    // Sort conflict by victims
+    // 
+    // descending: points.sort(function(a, b){return b-a});
+
+    if (options.sorted) {
+      if (options.sorted === 'asc') {
+        
+        data.sort(function (a, b) { return a.vicon - b.vicon; });
+        // This anonymous function is responsible for comparing two values a and b. If it returns a positive
+        // number, we're saying that a should come after b in the array. A negative number means that b
+        // should come after a. A zero means that the two are equal. This function is using the 'enrollment'
+        // property of each observation of data for this comparison. You'll need to change 'enrollment' to
+        // whatever property you want to sort your data on.
+        //
+        // Also, note that we're sorting the data in place, changing, or mutating, the 'data' variable. See
+        // the note in the README about how this compares to the filter() and slice() operations that we'll
+        // use for the next two data transforms.
+      } 
+      else if (options.sorted === 'desc') {
+        data.sort(function (a, b) { return  b.vicon- a.vicon; });
+        // Note that this is just the opposite of the above.
+      }
+        }
+    // Filter victims by region
+    // Select only the Departments from the current page (slice)
+    var table = document.getElementById('data-table');
+    var tbody = table.getElementsByTagName('tbody')[0];
+    // Because getElementsByTagName returns an array of DOM nodes (technically, it's an HTMLCollection),
+    // we need to select the first item in the array with the [0].
+    // Remove any existing rows
+    tbody.innerHTML = '';
+    // Add a new row for each datum (item in the 'data' array)
+    data.forEach(function (d) {
+      var row = document.createElement('tr');
+      // This is like create a new <tr></tr> in HTML, but it doesn't yet exist in the DOM, so we can't
+      // see it. At the bottom of this forEach() loop, we append it to an element that is in the DOM,
+      // at which point it appears. We'll follow this same pattern for each of the <td></td> elements
+      // we create below.
+      
+
+      var department = document.createElement('td');
+      department.innerHTML = d.department;
+      row.appendChild(department);
+      var index = document.createElement('td');
+      index.innerHTML = d.index;
+      row.appendChild(index);
+      var vicon = document.createElement('td');
+      vicon.innerHTML = d.vicon;
+      row.appendChild(vicon);
+      var barWrapper = document.createElement('td');
+      var bar = document.createElement('div');
+      bar.setAttribute('class', 'bar');
+
+      // We set the class to 'bar' so we can use the .bar class we have in our styles. This gives it a
+      // consistent height and a color.
+      var VictimsPercentage = d.vicon / MAX_VICTIMS;
+      bar.setAttribute('style', 'width: ' + (VictimsPercentage * 100) + '%;');
+      // I've broken this operation up into two steps, which is a little different than we did in class.
+      // The end result is the same, though. If 'enrollmentPercentage' equals 0.75, this set the style
+      // attribute of our DIV so that it looks something like <div style="width: 75%;"></div>
+      barWrapper.appendChild(bar);
+      row.appendChild(barWrapper);
+      tbody.appendChild(row);
+    });
+  }
+  // The function declaration above just creates the function, it doesn't yet run it. That's what we
+  // do here, to make sure that the table is populated prior to the user clicking anything.
+ 
+  updateTable();
+  // This is creating an event listener, a function that the browser will call every time the specified
+  // event is "fired" by the selected element (here the button with the id 'sort-asc').
+  document.getElementById('sort-asc').addEventListener('click', function () {
+    // Disable the sort if 'asc' was previously selected, otherwise set the sort to 'asc'
+    if (options.sorted === 'asc') {
+      options.sorted = false;
+    } else {
+      options.sorted = 'asc';
+    }
+    // And now we need to re-run the function that populates the table. Note that the results will be
+    // different because we've change the options object.
+    updateTable();
+  });
+  document.getElementById('sort-desc').addEventListener('click', function () {
+    // Disable the sort if 'desc' was previously selected, otherwise set the sort to 'desc'
+    if (options.sorted === 'desc') {
+      options.sorted = false;
+    } else {
+      options.sorted = 'desc';
+    }
+    updateTable();
+  });
+  // This is where we'll need to create new event listeners for our filter and next/previous page buttons.
+  // They'll look very similar to the above, just listening to different elements, and perhaps performing
+  // different actions when clicked.
+</script>
+<div class="auxparagraph">
+             <p> Source: Special Unit of Victims - Colombian Presidency </p>
+</body>
+</html>
