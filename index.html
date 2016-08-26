@@ -6,127 +6,10 @@
   <title>Colombia Colombia: Sexual Assault, Homicides, and Battery </title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed|Taviraj" rel="stylesheet">
-
-  <style>
-
-    .header {
-        background: linear-gradient(to bottom, #114B5F 0%, #262626 100%);
-        color: white;
-        text-align: right;
-        padding: 1em 0 3em;
-        height: 120px; 
-        font-family: 'Oswald', sans-serif;
-      }
+  <link href="style.css" rel="stylesheet">
+  
 
 
-    .auxcontainer {
-      background: #878C8F;
-      padding: 1em 0 2em;
-      height: 52px;
-      color: white; 
-
-    }
-
-
-    #description {
-        background-color: #114B5F;
-        color: white;
-        margin: 20px 0 20px 0;
-        padding: 20px;
-        float:left;
-        font-family: 'Taviraj', serif;
-      }
-
-
-
-    
-
-    .column
-    {
-      
-      /* display dictates the orientation of the element */
-      display: inline-block;
-      /* Set vertical-align to top in order to align columns to the top of the page */
-      vertical-align: top;
-      width: 400px;
-      /* width (1), style (solid/groove/dash), color  */
-     
-    }
-
-    .totals div {
-      font: 10px sans-serif;
-      background-color: #2b3121;
-      text-align: center;
-      padding: 3px;
-      margin: 1px;
-      color: white;
-      float:bottom;
-    }
-
-    circle {
-      cursor: pointer; 
-    }
-
-    #department {
-      display: block;
-    }
-
-    .label {
-      font-weight: 700;
-    }
-
-    .titlelabel {
-      font-weight: 700;
-    }
-
-    #bubble-chart-wrapper {
-      display: inline-block;
-      border-left-width: 1px;
-      border-left-style: dashed ;
-      border-left-color: #262626;
-
-    }
-
-    #comparison-chart-wrapper {
-      display: none;
-    }
-
-    #reset {
-      display: none;
-    }
-
-    #compare {
-      display: none;
-    } 
-
-    text {
-      fill: #373D3F;
-      word-spacing: 0.5px;
-      font-family: 'Taviraj', serif;
-      font-size: 12px;
-    }
-
-    button {
-      border-radius: 5px !important;
-    }
-
-    #bubble-legend g:nth-child(1) rect {
-      fill: #ED474A !important;
-    }
-
-    #bubble-legend g:nth-child(2) rect {
-      fill: #AF5D63 !important;
-    }
-
-    #bubble-legend g:nth-child(3) rect {
-      fill: #846075 !important;
-    }
-
-    #bubble-legend g:nth-child(4) rect {
-      fill: #4A6C6F !important;
-    }
-
-  </style>
 
 
 
@@ -150,7 +33,8 @@
 
   <div class= "auxcontainer">
     
-    <p id="espPar">Today Colombia has at least two recognized guerrilla groups (FARC and ELN) and at least 7 million deaths as a result of the conflict (six times Washington D.C population). Another consequence of the ongoing conflict is the negative impact on the social and economic structures as areas where the conflict is more intense have more risk having more felonies such as: homicides, sexual assaults, and battery.  </p>
+    <p id="espPar">Today Colombia has at least two recognized guerrilla groups (FARC and ELN) and at least 7 million deaths as a result of the conflict (six times Washington D.C population). Another consequence of the ongoing conflict is the negative impact on the social and economic structures as areas where the conflict is more intense have more risk having more felonies such as: homicides, sexual assaults, and battery <p/>
+    <p><a href=" http://oasportal.policia.gov.co/imagenes_ponal/dijin/observatorio/cicri/data.html ">Source: National Police - Colombia </a></p>
 
     <div class="btn-toolbar">
         <div class="btn-group">
@@ -163,14 +47,19 @@
   
 
   <div id="info" class="column"> <!-- sintax = attribute = value -->
+
     <div id="department-title">
     </div>
+
     <div id="department-svg-wrapper">
 
     </div>
 
-    <div id="description">
+    <div class="description" id="department-description">
       The graphical representations below are design by departaments. Colombia has 32 departments which can be categorized by The Index of Conflict which runs between 1 to 4. Where 1 is highly intense conflict with a permanent presence of a guerrilla group 365 days out of the year and 4 is barely any extended presence of a guerrilla group, and as a result, infrequent or low instances of conflict. 
+
+      All the raw data pertaining to violent crimes in each department was available on the national police website separated by year. The data was collected from the 16 different databases and combined so as to provide a 16 year long look at the effect of conflict on each individual department. The data regarding the total number of victims was taken from the National Center for Historical Memory of Colombia.
+
     </div>
 
   </div>
@@ -180,9 +69,10 @@
   </div>
 
   <div id="comparison-chart-wrapper">
+    
+
     <label for="Department">Department </label>
     <select id="department">
-      <option value="all">All</option>
       <option value="Amazonas">Amazonas</option>
       <option value="Antioquia">Antioquia</option>
       <option value="Arauca">Arauca</option>
@@ -215,17 +105,22 @@
       <option value="Vaupes">Vaupes</option>
       <option value="Vichada">Vichada</option>
     </select>
+    
+    <div id="comparison-svg-wrapper">
+    </div>
+
+    <div id="comparison-description" class="description">
+    </div>
+
   </div>
-
-
-
 
   <div class="totals">
     <div style="width: 454px;">Assault and battery 117964 victims</div>
     <div style="width: 349px;">Homicide - 86942 victims</div>
     <div style="width: 286px;">Sexual Assaults - 71978 victims</div>
   </div>
-  
+
+ 
   <script>
 
     var bubbleData;
@@ -249,14 +144,6 @@
     stackLegendValues = ["masculine", "feminine"];
     legendrange2 = d3.scale.category20().domain(stackLegendValues);
 
-    d3.json('data2.json', function (error, json) {
-      if (error) { throw error; }
-      bubbleData = json;
-
-      bubble = new Bubble( );
-
-    });
-
     // Calling the data 
     d3.csv('gender.csv',
       function(d) {
@@ -271,8 +158,16 @@
         if (error) { throw error; }
         stackData = json;
 
-        comparisonStack = new Stack("#comparison-chart-wrapper");
-        departmentStack = new Stack("#department-svg-wrapper"); 
+        d3.json('data2.json', function (error, json) {
+          if (error) { throw error; }
+          bubbleData = json;
+
+          bubble = new Bubble( );
+
+          comparisonStack = new Stack("#comparison-svg-wrapper", "#comparison-description");
+          departmentStack = new Stack("#department-svg-wrapper", "#department-description"); 
+        });
+        
     });
 
     d3.select('#department').on('change', function () {
@@ -298,6 +193,8 @@
 
       d3.select("#compare")
       .style("display", "none"); 
+
+
     });
 
 
@@ -343,7 +240,7 @@
           
 
           if( d.index == 4 ){
-            return d.department; // no using "" because we need the variable 
+            return d.department; 
           }
           else {
             return null;
@@ -364,7 +261,7 @@
           .enter()
           .append("g")  
             .attr("class", "node")
-            .attr("transform", function (d) { return "translate(" +d.x + "," + d.y + ") rotate( -90 )"; }); // this is not about the function is about the html position
+            .attr("transform", function (d) { return "translate(" +d.x + "," + d.y + ") rotate( -90 )"; }); 
 
         node.append("circle")
           .attr("r", function (d) { return d.r; }) 
@@ -386,7 +283,7 @@
           .on( 'mouseout', tooltip.hide );
 
         node.append ("text")
-          //.attr("r", 0) Place the data starting at the point 0,0 of the circle - does not look so good
+          
           .attr("text-anchor", "middle")
           // if has chidlren OR index iqual to 4 return empty otherwise return d.department 
           .text(function (d) { return (d.children || d.index ==4) ? "" : d.department; }) // Ternary operator
@@ -404,16 +301,12 @@
 
       }
 
-      // info is a parameter that is expected between the parenthesis when you call the function
+      
       thisBubble.setInfo = function( department, info, index ) {
 
-        // document is a predefined object that represents the page
-        // its going to return an array of elements (SSSSS plural)
-        // [0] = 1st index in our array - elements that have the class column ergo they are columns -- follow styles declare at the top
-        //var infoColumn = document.getElementsByClassName( "column" )[ 0 ]; // this just points to the element column
+        
 
-        var description = d3.select( "#description" )[ 0 ][ 0 ]; //this returns a single element 
-
+        // Disable the dropdown list item for this department
         d3.select("[value='" + department + "']") 
           .attr ("disabled", "disabled");
 
@@ -421,7 +314,7 @@
           .style ("display", "inline-block"); 
 
         d3.select( "#department-title" )
-          .html(department + " ( Index of Conflict - " + index + ")" )
+          .html(department )
           .style("color", conflictIndexColors[ index ] )
           .style("text-align", "center")
           .style("font-family", "'Oswald', sans-serif" )
@@ -431,21 +324,20 @@
           .style ("display", "none"); 
 
 
-        // The innerHTML property represents the text/html within an element
-        description.innerHTML = info;
+        
 
         departmentStack.update( department );
 
 
 
-        // This function doesn't need to return anything
+        
       }
 
       thisBubble.setup( );
     }
 
 
-    function Stack (targetSelector) {
+    function Stack (targetSelector, descriptionSelector) {
       var thisStack = this;
       // source for the stack: https://www.youtube.com/watch?v=n9kKdbzCiLI 
       
@@ -491,19 +383,34 @@
       // update is a member of stack
       thisStack.update = function (department) {
 
+        var description = "";
+        var bubbleInfo = [];
+
         // TRANSFORM
         thisStack.svg.selectAll( "*" ).remove( ); // adding this so the bars go away every time a filter is activate it.
-        console.log( thisStack.svg[ 0 ][ 0 ].getAttribute( "id" ) );
+        //console.log( thisStack.svg[ 0 ][ 0 ].getAttribute( "id" ) );
 
         // Filter the data
         thisStack.filteredData = stackData.slice();
 
         if( department !== "all" )
         {
-          //console.log(filteredData);
+          
           
           // Get the data for one department
           thisStack.filteredData = thisStack.filteredData.filter( function (data) {
+            return ( data.department == department );
+          });
+
+          
+
+          bubbleInfo = bubbleData.children.filter( function (data) {
+
+            if( data.department == department )
+            {
+              description = data.info;
+            }
+
             return ( data.department == department );
           });
         }
@@ -523,7 +430,7 @@
         stack(thisStack.groupedData);
 
 
-        //console.log( thisStack.groupedData );
+        
 
         //Set up scales
         xScale = d3.scale.ordinal()
@@ -540,7 +447,7 @@
           ])
           .range([h,0]);
 
-        //console.log( thisStack.groupedData );
+        ;
 
         // Axis - 
         xAxis = d3.svg.axis() 
@@ -608,7 +515,7 @@
 
         thisStack.svg.append("g").attr("transform", "translate(250,10)").attr("class", "legend").call(threshold2);  
 
-         
+        d3.select( descriptionSelector ).html( description );
 
 
         // References: 
